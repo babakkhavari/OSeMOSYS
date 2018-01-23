@@ -1,0 +1,110 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Introduction to OSeMOSYS &#8212; OSeMOSYS Manual 0.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="2. Structure of OSeMOSYS" href="Structure of OSeMOSYS.html" />
+    <link rel="prev" title="Welcome to OSeMOSYS Manual’s documentation!" href="../manual_index.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="introduction-to-osemosys">
+<h1>Introduction to OSeMOSYS<a class="headerlink" href="#introduction-to-osemosys" title="Permalink to this headline">¶</a></h1>
+<p>At present there is a useful, but limited set of accessible energy system models. These tools often require significant investment in terms of human resources, training and software purchases in order to apply or further develop them. Unlike long established energy systems (partial equilibrium) models , OSeMOSYS potentially requires a less significant learning curve and time commitment to build and operate. Additionally, by not using proprietary software or commercial programming languages and solvers, OSeMOSYS requires no upfront financial investment.
+OSeMOSYS is designed as a tool to inform the development of local, national and multi-regional energy strategies. It covers all or individual energy sectors, including heat, electricity and transport. It is a deterministic linear optimisation model and minimises the total discounted costs. Mixed integer programming may be applied for certain functions, like the optimisation of discrete power plant capacity expansions.
+The model is driven by exogenously defined demands for energy services. These can be met through a range of technologies which draw on a set of resources, defined by their potentials and costs. On top of this, policy scenarios may impose certain technical constraints, economic realities or environmental targets. As in most long-term optimisation models, OSeMOSYS in its standard configuration assumes perfect foresight and perfect competition on energy markets.</p>
+<p>The model is characterised by a wide and flexible technology definition. A technology comprises any fuel use and conversion, from resource extraction and processing to generation, transmission and distribution, and appliances. It could therefore refer to, for example, an oil refinery, a hydropower plant or a heating system. A technology can be defined to consume and produce any combination of fuels. Each technology is characterised by numerous economic, technical and environmental parameters, for example, investment and operating costs, efficiencies, availabilities, and emission profiles.</p>
+<p>The OSeMOSYS model code is written in GNU MathProg, a high level mathematical programming language. The open source solver GLPK may be used for the mathematical optimisation of the model. Both the OSeMOSYS model and the GLPK solver do not require any upfront financial expenditure. GLPK can as well produce an MPS file for use with a more powerful solver . Diverging from commonly applied programming conventions, rather long parameter and variable names are used in OSeMOSYS. This ensures that formulas can be read in a rather self-explanatory manner and simplifies the familiarisation with the OSeMOSYS code for those new to this modelling tool.
+In its extended version, OSeMOSYS comprises just above 400 lines code. In 2013, a parallel shortened version of OSeMOSYS has been released. The merging of equations significantly improved the performance without affecting the model’s data requirements or results at the price of a reduced readability of the code.
+OSeMOSYS is developed in collaboration with a range of institutions, including the International Atomic Energy Agency (IAEA), the United Nations Industrial Development Organisation (UNIDO), KTH Royal Institute of Technology, Stanford University, University College London (UCL), University of Cape Town (UCT), Paul Scherrer Institute (PSI), Stockholm Environment Institute (SEI), and North Carolina State University.
+Several user interfaces are currently available or under development. For example, OSeMOSYS is well integrated into LEAP, which applies a limited set of OSeMOSYS’ optimisation features for power plant capacity expansion planning. Two alternative interfaces are currently being developed by KTH. One is a simplified Excel-based interface for teaching purposes, while the other will fully support the complete functionality of OSeMOSYS. However, at this stage, if the full scope of OSeMOSYS is required or if adjustments are necessary, OSeMOSYS is best set up as text files. This manual provides an introduction on how to do so.
+While the development of OSeMOSYS initiated in 2008, its first detailed description was published by <a class="reference external" href="http://www.sciencedirect.com/science/article/pii/S0301421511004897">Howells et al. in 2011</a> and a subset of the expansions described in <a class="reference external" href="https://www.sciencedirect.com/science/article/pii/S0360544212006299">Welsch et al. in 2012</a> led to its current version. This version is available for download at <a class="reference external" href="http://www.osemosys.org/get-started.html">www.osemosys.org</a>.</p>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../manual_index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="../manual_index.html" title="previous chapter">Welcome to OSeMOSYS Manual&#8217;s documentation!</a></li>
+      <li>Next: <a href="Structure of OSeMOSYS.html" title="next chapter">2. Structure of OSeMOSYS</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/manual/Introduction.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, KTH-dESA.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.5.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/manual/Introduction.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,112 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Code versions &#8212; OSeMOSYS Manual 0.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Create a model in OSeMOSYS" href="Create a model in OSeMOSYS.html" />
+    <link rel="prev" title="Structure of OSeMOSYS" href="Structure of OSeMOSYS.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="code-versions">
+<h1>Code versions<a class="headerlink" href="#code-versions" title="Permalink to this headline">¶</a></h1>
+<p>Currently the OSeMOSYS code is available in two versions:</p>
+<ul class="simple">
+<li>The <em>“long code”</em>, which includes a full version of equations, and</li>
+<li>The <em>“short code”</em>, which was developed by merging equations from the long version, in order to reduce the computational time.</li>
+</ul>
+<p>The long version is easier to read and understand, as it includes more simple, user-friendly equations. The way the shorter version was developed instead, allows for eliminating the need to calculate and store intermediate values and results in faster calculation times. Key outputs remains the same.</p>
+<p>The long version computes more variables, which help the user in understanding what the model really does. The long version is therefore particularly helpful also to test modifications and enhancements to the main code. Therefore, the use of the long version is recommended unless the calculation times get prohibitively long.</p>
+<p>Problems which cannot be solved with the long code, due to time or RAM constraints, can be solved with the short code. To check if the RAM is a limiting constraint, during the computation it is sufficient to open the system task manager (for Windows-based machines, you can use the command Ctrl+Alt+Delete) and check if the RAM use is close to saturation. The RAM and time constraints may become binding when the model gets too complex. This may happen, e.g., when a multi-regional model is set up, with many technologies and time slices. In such cases, the shorter version of the code is recommended.</p>
+<p>The reduction in the number of equations in the short code translates into the generation of a smaller matrix of results to be solved. This significantly reduces the memory usage and the processing time, by 10 times (10x) and 5 times (5x) respectively.</p>
+<p>The short version of the OSeMOSYS code contains only the essential equations required for running the model. However, all the previous equations have been left as before, and &#8220;commented out&#8221; to better understand the methodology followed to shorten the code. It is important to note that the shortening of the code does not change any aspect of the functionality of OSeMOSYS. Furthermore, there are no special formatting requirements for the data file necessary to run the short code instead of the long one. Both the long and the short versions of OSeMOSYS code are developed and released as parallel versions simultaneously, every time a change is made or a functionality is added.</p>
+<p>The latest versions of the OSeMOSYS code were released on the 8th of November 2017, both for the long and the short code, and are <a class="reference external" href="http://www.osemosys.org/get-started.html">available for download on the related website</a>.</p>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../manual_index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="Structure of OSeMOSYS.html" title="previous chapter">Structure of OSeMOSYS</a></li>
+      <li>Next: <a href="Create a model in OSeMOSYS.html" title="next chapter">Create a model in OSeMOSYS</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/manual/Code versions.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, KTH-dESA.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.5.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/manual/Code versions.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

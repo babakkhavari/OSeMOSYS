@@ -1,0 +1,1337 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Structure of OSeMOSYS &#8212; OSeMOSYS Manual 0.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Code versions" href="Code versions.html" />
+    <link rel="prev" title="Introduction to OSeMOSYS" href="Introduction.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="structure-of-osemosys">
+<h1>Structure of OSeMOSYS<a class="headerlink" href="#structure-of-osemosys" title="Permalink to this headline">¶</a></h1>
+<p>In OSeMOSYS, like usually in linear programs, sets, parameters and variables are defined. In this section, the sets, parameters and variables existing in OSeMOSYS are listed and briefly described. Illustrative examples on how to assign values for each of these will be given in the following Sections.</p>
+<div class="section" id="sets">
+<h2>Sets<a class="headerlink" href="#sets" title="Permalink to this headline">¶</a></h2>
+<p>The ‘sets’ define the physical structure of a model, usually independent from the specific scenarios which will be run. They define the time domain and time split, the spatial coverage, the technologies and energy vectors to be considered, etc. For instance, when a variable is defined as a function of the set ‘YEAR’ it will be indicated as <strong>variablename[y]</strong> at it will be computed for every year listed in the set.
+The sets of OSeMOSYS are presented in Table xxx.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="3%" />
+<col width="96%" />
+<col width="2%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head"><strong>Name</strong></th>
+<th class="head"><strong>Description</strong></th>
+<th class="head"><strong>Index</strong></th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>YEAR</td>
+<td>It represents the time frame of the model, it   contains all the years to be considered in the study.</td>
+<td>y</td>
+</tr>
+<tr class="row-odd"><td>TECHNOLOGY</td>
+<td>It includes any element of the energy system that   changes a commodity from one form to another, uses it or supplies it. All   system components are set up as a ‘technology’ in OSeMOSYS. As the model is   an abstraction, the modeller is free to interpret the role of a technology at   will, where relevant. It may for example represent a single real technology   (such as a power plant) or can represent a heavily aggregated collection of   technologies (such as the stock of several million light bulbs), or may even   simply be a ‘dummy technology’, perhaps used for accounting purposes.</td>
+<td>t</td>
+</tr>
+<tr class="row-even"><td>TIMESLICE</td>
+<td>It represents the time split of each modelled year,   therefore the time resolution of the model. Common to several energy systems   modelling tools (incl. MESSAGE / MARKAL / TIMES), the annual demand is   ‘sliced’ into representative fractions of the year. It is necessary to assess   times of the year when demand is high separately from times when demand is   low, for fuels that are expensive to store. In order to reduce the   computation time, these ‘slices’ are often grouped. Thus, the annual demand may   be split into aggregate seasons where demand levels are similar (such as   ‘summer, winter and intermediate’). Those seasons may be subdivided into   aggregate ‘day types’ (such as workdays and weekends), and the day further   sub divided (such as into day and night) depending on the level of demand.</td>
+<td>l</td>
+</tr>
+<tr class="row-odd"><td>FUEL</td>
+<td>It includes any energy vector, energy service or   proxies entering or exiting technologies. These can be aggregate groups,   individual flows or artificially separated, depending on the requirements of   the analysis.</td>
+<td>f</td>
+</tr>
+<tr class="row-even"><td>EMISSION</td>
+<td>It includes any kind of emission potentially   deriving from the operation of the defined technologies. Typical examples   would include atmospheric emissions of greenhouse gasses, such as CO2.</td>
+<td>e</td>
+</tr>
+<tr class="row-odd"><td>MODE_OF_OPERATION</td>
+<td>It defines the number of modes of operation that the technologies can have. If a   technology can have various input or output fuels and it can choose the mix (i.e.   any linear combination) of these input or output fuels, each mix can be   accounted as a separate mode of operation. For example, a CHP plant may produce   heat in one mode of operation and electricity in another.</td>
+<td>m</td>
+</tr>
+<tr class="row-even"><td>REGION</td>
+<td>It sets the regions to be modelled, e.g. different   countries. For each of them, the supply-demand balances for all the energy   vectors are ensured, including trades with other regions. In some occasions   it might be computationally more convenient to model different countries   within the same region and differentiate them simply by creating ad hoc fuels   and technologies for each of them.</td>
+<td>r</td>
+</tr>
+<tr class="row-odd"><td>SEASON</td>
+<td>It gives indication (by successive numerical values)   of how many seasons (e.g. winter, intermediate, summer) are accounted for and   in which order.   This set is needed if storage facilities are   included in the model.</td>
+<td>ls</td>
+</tr>
+<tr class="row-even"><td>DAYTYPE</td>
+<td>It gives indication (by successive numerical values)   of how many day types (e.g. workday, weekend) are accounted for and in which   order.    This set is needed if storage facilities are   included in the model.</td>
+<td>ld</td>
+</tr>
+<tr class="row-odd"><td>DAILYTIMEBRACKET</td>
+<td>It gives indication (by successive numerical values)   of how many parts the day is split into (e.g. night, morning, afternoon,   evening) and in which order these parts are sorted.    This set is needed if storage facilities are   included in the model.</td>
+<td>lh</td>
+</tr>
+<tr class="row-even"><td>STORAGE</td>
+<td>It includes storage facilities in the model.</td>
+<td>s</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="parameters">
+<h2>Parameters<a class="headerlink" href="#parameters" title="Permalink to this headline">¶</a></h2>
+<p>The parameters are the user-defined numerical inputs to the model. While usually the structure of a model, therefore the sets, remains fixed across scenarios, it is common practice to change the values of some parameters when running different scenarios and/or sensitivity analyses. As will be clear in the following, each parameter is a function of the elements in one or more sets. For instance, <strong>CapitalCost[r,t,y]</strong> indicates that the capital cost is a function of the region (r), the technology (t) and the year (y) .
+A list and brief description of the parameters declared in the master version of OSeMOSYS is given in Table ...</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="16%" />
+<col width="84%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head" colspan="2"><strong>Global parameters</strong></th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>YearSplit[l,y]</td>
+<td>Duration of a modelled time slice, expressed as a fraction of the year. The sum of each entry over one modelled year should equal 1.</td>
+</tr>
+<tr class="row-odd"><td>DiscountRate[r]</td>
+<td>Region specific value for the discount rate, expressed in decimals (e.g. 0.05)</td>
+</tr>
+<tr class="row-even"><td>DaySplit[lh,y]</td>
+<td>Length of one DailyTimeBracket in one specific day as a fraction of the year (e.g., when distinguishing between days and night: 12h/(24h*365d)).</td>
+</tr>
+<tr class="row-odd"><td>Conversionls[l,ls]</td>
+<td>Binary parameter linking one TimeSlice to a certain Season. It has value 0 if the TimeSlice does not pertain to the specific season, 1 if it does.</td>
+</tr>
+<tr class="row-even"><td>Conversionld[ld,l]</td>
+<td>Binary parameter linking one TimeSlice to a certain DayType. It has value 0 if the TimeSlice does not pertain to the specific DayType, 1 if it does.</td>
+</tr>
+<tr class="row-odd"><td>Conversionlh[lh,l]</td>
+<td>Binary parameter linking one TimeSlice to a certain DaylyTimeBracket. It has value 0 if the TimeSlice does not pertain to the specific DaylyTimeBracket, 1 if it does.</td>
+</tr>
+<tr class="row-even"><td>DaysInDayType[ls,ld,y]</td>
+<td>Number of days for each day type, within one week (natural number, ranging from 1 to 7)</td>
+</tr>
+<tr class="row-odd"><td>TradeRoute[r,rr,f,y]</td>
+<td>Binary parameter defining the links between region r and region rr, to enable or disable trading of a specific commodity. It has value 1 when two regions are linked, 0 otherwise</td>
+</tr>
+<tr class="row-even"><td>DepreciationMethod[r]</td>
+<td>Binary parameter defining the type of depreciation to be applied. It has value 1 for sinking fund depreciation, value 2 for straight-line depreciation.</td>
+</tr>
+<tr class="row-odd"><td colspan="2"><strong>Demands</strong></td>
+</tr>
+<tr class="row-even"><td>SpecifiedAnnualDemand[r,f,y]</td>
+<td>Total specified demand for the year, linked to a specific &#8216;time of use&#8217; during the year.</td>
+</tr>
+<tr class="row-odd"><td>SpecifiedDemandProfile[r,f,l,y]</td>
+<td>Annual fraction of energy-service or commodity demand that is required in each time slice. For each year, all the defined SpecifiedDemandProfile input values should sum up to 1.</td>
+</tr>
+<tr class="row-even"><td>AccumulatedAnnualDemand[r,f,y]</td>
+<td>Accumulated Demand for a certain commodity in one specific year. It cannot be defined for a commodity if its SpecifiedAnnualDemand for the same year is already defined and vice versa.</td>
+</tr>
+<tr class="row-odd"><td colspan="2"><strong>Performance</strong></td>
+</tr>
+<tr class="row-even"><td>CapacityToActivityUnit[r,t]</td>
+<td>Conversion factor relating the energy that would be produced when one unit of capacity is fully used in one year.</td>
+</tr>
+<tr class="row-odd"><td>AvailabilityFactor[r,t,y]</td>
+<td>Capacity available eachTimeSlice expressed as a fraction of the total installed capacity, with values ranging from 0 to 1. It gives the possibility to account for forced outages.</td>
+</tr>
+<tr class="row-even"><td>OperationalLife[r,t]</td>
+<td>Maximum time a technology can run in the whole year, as a fraction of the year ranging from 0 to 1. It gives the possibility to account for planned outages.</td>
+</tr>
+<tr class="row-odd"><td>ResidualCapacity[r,t,y]</td>
+<td>Useful lifetime of a technology, expressed in years.</td>
+</tr>
+<tr class="row-even"><td>InputActivityRatio[r,t,f,m,y]</td>
+<td>Capacity available from before the modelling period.</td>
+</tr>
+<tr class="row-odd"><td>OutputActivityRatio[r,t,f,m,y]</td>
+<td>Rate of use of a commodity by a technology, as a ratio of the rate of activity.</td>
+</tr>
+<tr class="row-even"><td colspan="2"><strong>Technology costs</strong></td>
+</tr>
+<tr class="row-odd"><td>CapitalCost[r,t,y]</td>
+<td>Capital investment cost of a technology, per unit of capacity.</td>
+</tr>
+<tr class="row-even"><td>VariableCost[r,t,m,y]</td>
+<td>Cost of a technology for a given mode of operation (Variable O&amp;M cost), per unit of activity.</td>
+</tr>
+<tr class="row-odd"><td>FixedCost[r,t,y]</td>
+<td>Fixed O&amp;M cost of a technology, per unit of capacity.</td>
+</tr>
+<tr class="row-even"><td colspan="2"><strong>Storage</strong></td>
+</tr>
+<tr class="row-odd"><td>TechnologyToStorage[r,t,s,m]</td>
+<td>Binary parameter linking a technology to the storage facility it charges. It has value 1 if the technology and the storage facility are linked, 0 otherwise.</td>
+</tr>
+<tr class="row-even"><td>TechnologyFromStorage[r,t,s,m]</td>
+<td>Binary parameter linking a storage facility to the technology it feeds. It has value 1 if the technology and the storage facility are linked, 0 otherwise.</td>
+</tr>
+<tr class="row-odd"><td>StorageLevelStart[r,s]</td>
+<td>Level of storage at the beginning of first modelled year, in units of activity.</td>
+</tr>
+<tr class="row-even"><td>StorageMaxChargeRate[r,s]</td>
+<td>Maximum charging rate for the storage, in units of activity per year.</td>
+</tr>
+<tr class="row-odd"><td>StorageMaxDischargeRate[r,s]</td>
+<td>Maximum discharging rate for the storage, in units of activity per year.</td>
+</tr>
+<tr class="row-even"><td>MinStorageCharge[r,s,y]</td>
+<td>It sets a lower bound to the amount of energy stored, as a fraction of the maximum, with a number reanging between 0 and 1. The storage facility cannot be emptied below this level.</td>
+</tr>
+<tr class="row-odd"><td>OperationalLifeStorage[r,s]</td>
+<td>Useful lifetime of the storage facility.</td>
+</tr>
+<tr class="row-even"><td>CapitalCostStorage[r,s,y]</td>
+<td>Binary parameter linking a technology to the storage facility it charges. It has value 0 if the technology and the storage facility are not linked, 1 if they are.</td>
+</tr>
+<tr class="row-odd"><td>ResidualStorageCapacity[r,s,y]</td>
+<td>Binary parameter linking a storage facility to the technology it feeds. It has value 0 if the technology and the storage facility are not linked, 1 if they are.</td>
+</tr>
+<tr class="row-even"><td colspan="2"><strong>Capacity constraints</strong></td>
+</tr>
+<tr class="row-odd"><td>CapacityOfOneTechnologyUnit[r,t,y]</td>
+<td>Capacity of one new unit of a technology. In case the user sets this parameter, the related technology will be installed only in batches of the specified capacity and the problem will turn into a Mixed Integer Linear Problem.</td>
+</tr>
+<tr class="row-even"><td>TotalAnnualMaxCapacity[r,t,y]</td>
+<td>Total maximum existing (residual plus cumulatively installed) capacity allowed for a technology in a specified year.</td>
+</tr>
+<tr class="row-odd"><td>TotalAnnualMinCapacity[r,t,y]</td>
+<td>Total minimum existing (residual plus cumulatively installed) capacity allowed for a technology in a specified year.</td>
+</tr>
+<tr class="row-even"><td colspan="2"><strong>Investment constraints</strong></td>
+</tr>
+<tr class="row-odd"><td>TotalAnnualMaxCapacityInvestment[r,t,y]</td>
+<td>Maximum capacity of a technology, expressed in power units.</td>
+</tr>
+<tr class="row-even"><td>TotalAnnualMinCapacityInvestment[r,t,y]</td>
+<td>Minimum capacity of a technology, expressed in power units.</td>
+</tr>
+<tr class="row-odd"><td colspan="2"><strong>Activity constraints</strong></td>
+</tr>
+<tr class="row-even"><td>TotalTechnologyAnnualActivityUpperLimit[r,t,y]</td>
+<td>Total maximum level of activity allowed for a technology in one year.</td>
+</tr>
+<tr class="row-odd"><td>TotalTechnologyAnnualActivityLowerLimit[r,t,y]</td>
+<td>Total minimum level of activity allowed for a technology in one year.</td>
+</tr>
+<tr class="row-even"><td>TotalTechnologyModelPeriodActivityUpperLimit[r,t]</td>
+<td>Total maximum level of activity allowed for a technology in the entire modelled period.</td>
+</tr>
+<tr class="row-odd"><td>TotalTechnologyModelPeriodActivityLowerLimit[r,t]</td>
+<td>Total minimum level of activity allowed for a technology in the entire modelled period.</td>
+</tr>
+<tr class="row-even"><td colspan="2"><strong>Reserve margin</strong></td>
+</tr>
+<tr class="row-odd"><td>ReserveMarginTagTechnology[r,t,y]</td>
+<td>Binary parameter tagging the technologies that are allowed to contribute to the reserve margin. It has value 1 for the technologies allowed, 0 otherwise.</td>
+</tr>
+<tr class="row-even"><td>ReserveMarginTagFuel[r,f,y]</td>
+<td>Binary parameter tagging the fuels to which the reserve margin applies. It has value 1 if the reserve margin applies to the fuel, 0 otherwise.</td>
+</tr>
+<tr class="row-odd"><td>ReserveMargin[r,y]</td>
+<td>Minimum level of the reserve margin required to be provided for all the tagged commodities, by the tagged technologies. If no reserve margin is required, the parameter will have value 1; if, for instance, 20% reserve margin is required, the parameter will have value 1.2.</td>
+</tr>
+<tr class="row-even"><td colspan="2"><strong>RE Generation target</strong></td>
+</tr>
+<tr class="row-odd"><td>RETagTechnology[r,t,y]</td>
+<td>Binary parameter tagging the renewable technologies that must contribute to reaching the indicated minimum renewable production target. It has value 1 for thetechnologies contributing, 0 otherwise.</td>
+</tr>
+<tr class="row-even"><td>RETagFuel[r,f,y]</td>
+<td>Binary parameter tagging the fuels to which the renewable target applies to. It has value 1 if the target applies, 0 otherwise.</td>
+</tr>
+<tr class="row-odd"><td>REMinProductionTarget[r,y]</td>
+<td>Minimum ratio  of all renewable commodities tagged in the RETagCommodity parameter, to be produced by the technologies tagged with the RETechnology parameter.</td>
+</tr>
+<tr class="row-even"><td colspan="2"><strong>Emissions</strong></td>
+</tr>
+<tr class="row-odd"><td>EmissionActivityRatio[r,t,e,m,y]</td>
+<td>Emission factor of a technology per unit of activity, per mode of operation.</td>
+</tr>
+<tr class="row-even"><td>EmissionsPenalty[r,e,y]</td>
+<td>Penalty per unit of emission.</td>
+</tr>
+<tr class="row-odd"><td>AnnualExogenousEmission[r,e,y]</td>
+<td>It allows the user to account for additional annual emissions, on top of those computed endogenously by the model (e.g. emissions generated outside the region).</td>
+</tr>
+<tr class="row-even"><td>AnnualEmissionLimit[r,e,y]</td>
+<td>Annual upper limit for a specific emission generated in the whole modelled region.</td>
+</tr>
+<tr class="row-odd"><td>ModelPeriodExogenousEmission[r,e]</td>
+<td>It allows the user to account for additional emissions over the entire modelled period, on top of those computed endogenously by the model (e.g. generated outside the region).</td>
+</tr>
+<tr class="row-even"><td>ModelPeriodEmissionLimit[r,e]</td>
+<td>Annual upper limit for a specific emission generated in the whole modelled region, over the entire modelled period.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="variables">
+<h2>Variables<a class="headerlink" href="#variables" title="Permalink to this headline">¶</a></h2>
+<p>The variables are the outputs computed by the code. As much as the parameters, also the variables are functions of the elements in one or more sets.
+In the following Table ..., a list and brief description of all the variables computed by the code of OSeMOSYS (in its full version) is given. As will be explained in Section 3, a shortened version of OSeMOSYS has been created, to improve the computational capability at the expenses of the readability of the code. In such version, only some of the variables here listed are computed.
+When reasonable, the domain of several variables has been constrained to be positive, in order to decrease the size of the solution space and therefore the computational effort.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="16%" />
+<col width="77%" />
+<col width="6%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head"><strong>Demands</strong></th>
+<th class="head">&#160;</th>
+<th class="head">Unit</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>RateOfDemand[r,l,f,y]&gt;=0</td>
+<td>Intermediate variable. It represents the energy that would be demanded in one time slice l if the latter lasted the whole year. It is a function of  the parameters SpecifiedAnnualDemand and SpecifiedDemandProfile.</td>
+<td>Energy (per year)</td>
+</tr>
+<tr class="row-odd"><td>Demand[r,l,f,y]&gt;=0</td>
+<td>Demand for one fuel in one time slice.</td>
+<td>Energy</td>
+</tr>
+<tr class="row-even"><td><strong>Storage</strong></td>
+<td>&#160;</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>RateOfStorageCharge[r,s,ls,ld,lh,y]</td>
+<td>Intermediate variable. It represents the commodity that would be charged to the storage facility s in one time slice if the latter lasted the whole year. It is a function of the RateOfActivity and the parameter TechnologyToStorage.</td>
+<td>Energy (per year)</td>
+</tr>
+<tr class="row-even"><td>RateOfStorageDischarge[r,s,ls,ld,lh,y]</td>
+<td>Intermediate variable. It represents the commodity that would be discharged from storage facility s in one time slice if the latter lasted the whole year. It is a function of  the RateOfActivity and the parameter TechnologyFromStorage.</td>
+<td>Energy (per year)</td>
+</tr>
+<tr class="row-odd"><td>NetChargeWithinYear[r,s,ls,ld,lh,y]</td>
+<td>Net quantity of commodity charged to storage facility s in year y. It is a function of the RateOfStorageCharge and the RateOfStorageDischarge and it can be negative.</td>
+<td>Energy</td>
+</tr>
+<tr class="row-even"><td>NetChargeWithinDay[r,s,ls,ld,lh,y]</td>
+<td>Net quantity of commodity charged to storage facility s in daytype ld. It is a function of the RateOfStorageCharge and the RateOfStorageDischarge and can be negative.</td>
+<td>Energy</td>
+</tr>
+<tr class="row-odd"><td>StorageLevelYearStart[r,s,y]&gt;=0</td>
+<td>Level of stored commodity in storage facility s in the first time step of year y.</td>
+<td>Energy</td>
+</tr>
+<tr class="row-even"><td>StorageLevelYearFinish[r,s,y]&gt;=0</td>
+<td>Level of stored commodity in storage facility s in the last time step of year y.</td>
+<td>Energy</td>
+</tr>
+<tr class="row-odd"><td>StorageLevelSeasonStart[r,s,ls,y]&gt;=0</td>
+<td>Level of stored commodity in storage facility s in the first time step of season ls.</td>
+<td>Energy</td>
+</tr>
+<tr class="row-even"><td>StorageLevelDayTypeStart[r,s,ls,ld,y]&gt;=0</td>
+<td>Level of stored commodity in storage facility s in the first time step of daytype ld.</td>
+<td>Energy</td>
+</tr>
+<tr class="row-odd"><td>StorageLevelDayTypeFinish[r,s,ls,ld,y]&gt;=0</td>
+<td>Level of stored commodity in storage facility s in the last time step of daytype ld.</td>
+<td>Energy</td>
+</tr>
+<tr class="row-even"><td>StorageLowerLimit[r,s,y]&gt;=0</td>
+<td>Minimum allowed level of stored commodity in storage facility s, as a function of the storage capacity and the user-defined MinStorageCharge ratio.</td>
+<td>Energy</td>
+</tr>
+<tr class="row-odd"><td>StorageUpperLimit[r,s,y]&gt;=0</td>
+<td>Maximum allowed level of stored commodity in storage facility s. It corresponds to the total existing capacity of storage facility s (summing newly installed and pre-existing capacities).</td>
+<td>Energy</td>
+</tr>
+<tr class="row-even"><td>AccumulatedNewStorageCapacity[r,s,y]&gt;=0</td>
+<td>Cumulative capacity of newly installed storage from the beginning of the time domain to year y.</td>
+<td>Energy</td>
+</tr>
+<tr class="row-odd"><td>NewStorageCapacity[r,s,y]&gt;=0</td>
+<td>Capacity of newly installed storage in year y.</td>
+<td>Energy</td>
+</tr>
+<tr class="row-even"><td>CapitalInvestmentStorage[r,s,y]&gt;=0</td>
+<td>Undiscounted investment in new capacity for storage facility s. Derived from the NewStorageCapacity and the parameter CapitalCostStorage.</td>
+<td>Monetary units</td>
+</tr>
+<tr class="row-odd"><td>DiscountedCapitalInvestmentStorage[r,s,y]&gt;=0</td>
+<td>Investment in new capacity for storage facility s, discounted through the parameter DiscountRate.</td>
+<td>Monetary units</td>
+</tr>
+<tr class="row-even"><td>SalvageValueStorage[r,s,y]&gt;=0</td>
+<td>Salvage value of storage facility s in year y, as a function of the parameters OperationalLifeStorage and DepreciationMethod.</td>
+<td>Monetary units</td>
+</tr>
+<tr class="row-odd"><td>DiscountedSalvageValueStorage[r,s,y]&gt;=0</td>
+<td>Salvage value of storage facility s, discounted through the parameter DiscountRate.</td>
+<td>Monetary units</td>
+</tr>
+<tr class="row-even"><td>TotalDiscountedStorageCost[r,s,y]&gt;=0</td>
+<td>Difference between the discounted capital investment in new storage facilities and the salvage value in year y.</td>
+<td>Monetary units</td>
+</tr>
+<tr class="row-odd"><td><strong>Capacity variables</strong></td>
+<td>&#160;</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>NumberOfNewTechnologyUnits[r,t,y]&gt;=0, integer</td>
+<td>Number of newly installed units of technology t in year y, as a function of the parameter CapacityOfOneTechnologyUnit.</td>
+<td>No unit</td>
+</tr>
+<tr class="row-odd"><td>NewCapacity[r,t,y]&gt;=0</td>
+<td>Newly installed capacity of technology t in year y.</td>
+<td>Power</td>
+</tr>
+<tr class="row-even"><td>AccumulatedNewCapacity[r,t,y]&gt;=0</td>
+<td>Cumulative newly installed capacity of technology t from the beginning of the time domain to year y.</td>
+<td>Power</td>
+</tr>
+<tr class="row-odd"><td>TotalCapacityAnnual[r,t,y]&gt;=0</td>
+<td>Total existing capacity of technology t in year y (sum of cumulative newly installed and pre-existing capacity).</td>
+<td>Power</td>
+</tr>
+<tr class="row-even"><td><strong>Activity variables</strong></td>
+<td>&#160;</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>RateOfActivity[r,l,t,m,y] &gt;=0</td>
+<td>Intermediate variable. It represents the activity of technology t in one mode of operation and in time slice l, if the latter lasted the whole year.</td>
+<td>Energy (per year)</td>
+</tr>
+<tr class="row-even"><td>RateOfTotalActivity[r,t,l,y] &gt;=0</td>
+<td>Sum of the RateOfActivity of a technology over the modes of operation.</td>
+<td>Energy  (per year)</td>
+</tr>
+<tr class="row-odd"><td>TotalTechnologyAnnualActivity[r,t,y] &gt;=0</td>
+<td>Total annual activity of technology t.</td>
+<td>Energy</td>
+</tr>
+<tr class="row-even"><td>TotalAnnualTechnologyActivityByMode[r,t,m,y] &gt;=0</td>
+<td>Annual activity of technology t in mode of operation m.</td>
+<td>Energy</td>
+</tr>
+<tr class="row-odd"><td>TotalTechnologyModelPeriodActivity[r,t]</td>
+<td>Sum of the TotalTechnologyAnnualActivity over the years of the modelled period.</td>
+<td>Energy</td>
+</tr>
+<tr class="row-even"><td>RateOfProductionByTechnologyByMode[r,l,t,m,f,y] &gt;=0</td>
+<td>Intermediate variable. It represents the quantity of fuel f that technology t would produce in one mode of operation and in time slice l, if the latter lasted the whole year. It is a function of the variable RateOfActivity and the parameter OutputActivityRatio.</td>
+<td>Energy (per year)</td>
+</tr>
+<tr class="row-odd"><td>RateOfProductionByTechnology[r,l,t,f,y] &gt;=0</td>
+<td>Sum of the RateOfProductionByTechnologyByMode over the modes of operation.</td>
+<td>Energy (per year)</td>
+</tr>
+<tr class="row-even"><td>ProductionByTechnology[r,l,t,f,y] &gt;=0</td>
+<td>Production of fuel f by technology t in time slice l.</td>
+<td>Energy</td>
+</tr>
+<tr class="row-odd"><td>ProductionByTechnologyAnnual[r,t,f,y] &gt;=0</td>
+<td>Annual production of fuel f by technology t.</td>
+<td>Energy</td>
+</tr>
+<tr class="row-even"><td>RateOfProduction[r,l,f,y] &gt;=0</td>
+<td>Sum of the RateOfProductionByTechnology over all the technologies.</td>
+<td>Energy (per year)</td>
+</tr>
+<tr class="row-odd"><td>Production[r,l,f,y] &gt;=0</td>
+<td>Total production of fuel f in time slice l. It is the sum of the ProductionByTechnology over all technologies.</td>
+<td>Energy</td>
+</tr>
+<tr class="row-even"><td>RateOfUseByTechnologyByMode[r,l,t,m,f,y] &gt;=0</td>
+<td>Intermediate variable. It represents the quantity of fuel f that technology t would use in one mode of operation and in time slice l, if the latter lasted the whole year. It is the function of the variable RateOfActivity and the parameter InputActivityRatio.</td>
+<td>Energy (per year)</td>
+</tr>
+<tr class="row-odd"><td>RateOfUseByTechnology[r,l,t,f,y] &gt;=0</td>
+<td>Sum of the RateOfUseByTechnologyByMode over the modes of operation.</td>
+<td>Energy (per year)</td>
+</tr>
+<tr class="row-even"><td>UseByTechnologyAnnual[r,t,f,y] &gt;=0</td>
+<td>Annual use of fuel f by technology t.</td>
+<td>Energy</td>
+</tr>
+<tr class="row-odd"><td>UseByTechnology[r,l,t,f,y] &gt;=0</td>
+<td>Use of fuel f by technology t in time slice l.</td>
+<td>Energy</td>
+</tr>
+<tr class="row-even"><td>Use[r,l,f,y] &gt;=0</td>
+<td>Total use of fuel f in time slice l. It is the sum of the UseByTechnology over all technologies.</td>
+<td>Energy</td>
+</tr>
+<tr class="row-odd"><td>Trade[r,rr,l,f,y]</td>
+<td>Quantity of fuel f traded between region r and rr in time slice l.</td>
+<td>Energy</td>
+</tr>
+<tr class="row-even"><td>TradeAnnual[r,rr,f,y]</td>
+<td>Annual quantity of fuel f traded between region r and rr. It is the sum of the variable Trade over all the time slices.</td>
+<td>Energy</td>
+</tr>
+<tr class="row-odd"><td>ProductionAnnual[r,f,y] &gt;=0</td>
+<td>Total annual production of fuel f. It is the sum of the variable Production over all technologies.</td>
+<td>Energy</td>
+</tr>
+<tr class="row-even"><td>UseAnnual[r,f,y] &gt;=0</td>
+<td>Total annual use of fuel f. It is the sum of the variable Use over all technologies.</td>
+<td>Energy</td>
+</tr>
+<tr class="row-odd"><td><strong>Costing variables</strong></td>
+<td>&#160;</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>CapitalInvestment[r,t,y] &gt;=0</td>
+<td>Undiscounted investment in new capacity of technology t. It is a function of the NewCapacity and the parameter CapitalCost.</td>
+<td>Monetary units</td>
+</tr>
+<tr class="row-odd"><td>DiscountedCapitalInvestment[r,t,y] &gt;=0</td>
+<td>Investment in new capacity of technology t, discounted through the parameter DiscountRate.</td>
+<td>Monetary units</td>
+</tr>
+<tr class="row-even"><td>SalvageValue[r,t,y] &gt;=0</td>
+<td>Salvage value of technology t in year y, as a function of the parameters OperationalLife and DepreciationMethod.</td>
+<td>Monetary units</td>
+</tr>
+<tr class="row-odd"><td>DiscountedSalvageValue[r,t,y] &gt;=0</td>
+<td>Salvage value of technology t, discounted through the parameter DiscountRate.</td>
+<td>Monetary units</td>
+</tr>
+<tr class="row-even"><td>OperatingCost[r,t,y] &gt;=0</td>
+<td>Undiscounted sum of the annual variable and fixed operating costs of technology t.</td>
+<td>Monetary units</td>
+</tr>
+<tr class="row-odd"><td>DiscountedOperatingCost[r,t,y] &gt;=0</td>
+<td>Annual OperatingCost of technology t, discounted through the parameter DiscountRate.</td>
+<td>Monetary units</td>
+</tr>
+<tr class="row-even"><td>AnnualVariableOperatingCost[r,t,y] &gt;=0</td>
+<td>Annual variable operating cost of technology t. Derived from the TotalAnnualTechnologyActivityByMode and the parameter VariableCost.</td>
+<td>Monetary units</td>
+</tr>
+<tr class="row-odd"><td>AnnualFixedOperatingCost[r,t,y] &gt;=0</td>
+<td>Annual fixed operating cost of technology t. Derived from the TotalCapacityAnnual and the parameter FixedCost.</td>
+<td>Monetary units</td>
+</tr>
+<tr class="row-even"><td>TotalDiscountedCostByTechnology[r,t,y] &gt;=0</td>
+<td>Difference between the sum of discounted operating cost / capital cost / emission penalties and the salvage value.</td>
+<td>Monetary units</td>
+</tr>
+<tr class="row-odd"><td>TotalDiscountedCost[r,y] &gt;=0</td>
+<td>Sum of the TotalDiscountedCostByTechnology over all the technologies.</td>
+<td>Monetary units</td>
+</tr>
+<tr class="row-even"><td>ModelPeriodCostByRegion[r] &gt;=0</td>
+<td>Sum of the TotalDiscountedCost over all modelled years.</td>
+<td>Monetary units</td>
+</tr>
+<tr class="row-odd"><td><strong>Reserve margin</strong></td>
+<td>&#160;</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>TotalCapacityInReserveMargin[r,y] &gt;=0</td>
+<td>Total available capacity of the technologies required to provide reserve margin. It is derived from the TotalCapacityAnnual and the parameter ReserveMarginTagTechnology.</td>
+<td>Energy</td>
+</tr>
+<tr class="row-odd"><td>DemandNeedingReserveMargin[r,l,y] &gt;=0</td>
+<td>Quantity of fuel produced that is assigned to a target of reserve margin. Derived from the RateOfProduction and the parameter ReserveMarginTagFuel.</td>
+<td>Energy (per year)</td>
+</tr>
+<tr class="row-even"><td>TotalREProductionAnnual[r,y]</td>
+<td>Annual production by all technologies tagged as renewable in the model. Derived from the ProductionByTechnologyAnnual and the parameter RETagTechnology.</td>
+<td>Energy</td>
+</tr>
+<tr class="row-odd"><td>RETotalProductionOfTargetFuelAnnual[r,y]</td>
+<td>Annual production of fuels tagged as renewable in the model. Derived from the RateOfProduction and the parameter RETagFuel.</td>
+<td>Energy</td>
+</tr>
+<tr class="row-even"><td>AnnualTechnologyEmissionByMode[r,t,e,m,y] &gt;=0</td>
+<td>Annual emission of agent e by technology t in mode of operation m. Derived from the RateOfActivity and the parameter EmissionActivityRatio.</td>
+<td>Quantity of emission</td>
+</tr>
+<tr class="row-odd"><td>AnnualTechnologyEmission[r,t,e,y] &gt;=0</td>
+<td>Sum of the AnnualTechnologyEmissionByMode over the modes of operation.</td>
+<td>Quantity of emission</td>
+</tr>
+<tr class="row-even"><td>AnnualTechnologyEmissionPenaltyByEmission[r,t,e,y] &gt;=0</td>
+<td>Undiscounted annual cost of emission e by technology t. It is a function of the AnnualTechnologyEmission and the parameter EmissionPenalty.</td>
+<td>Monetary units</td>
+</tr>
+<tr class="row-odd"><td>AnnualTechnologyEmissionsPenalty[r,t,y] &gt;=0</td>
+<td>Total undiscounted annual cost of all emissions generated by technology t. Sum of the AnnualTechnologyEmissionPenaltyByEmission over all the emitted agents.</td>
+<td>Monetary units</td>
+</tr>
+<tr class="row-even"><td>DiscountedTechnologyEmissionsPenalty[r,t,y] &gt;=0</td>
+<td>Annual cost of emissions by technology t, discounted through the DiscountRate.</td>
+<td>Monetary units</td>
+</tr>
+<tr class="row-odd"><td>AnnualEmissions[r,e,y] &gt;=0</td>
+<td>Sum of the AnnualTechnologyEmission over all technologies.</td>
+<td>Quantity of emission</td>
+</tr>
+<tr class="row-even"><td>ModelPeriodEmissions[r,e] &gt;=0</td>
+<td>Total system emissions of agent e in the model period, accounting for both the emissions by technologies and the user defined ModelPeriodExogenousEmission.</td>
+<td>Quantity of emission</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="equations">
+<h2>Equations<a class="headerlink" href="#equations" title="Permalink to this headline">¶</a></h2>
+<p>The OSeMOSYS code is divided into blocks of equations that comprises one objective function and several constraints. The blocks of code allow for a modular structure in different functionalities can be added or removed based on the user’s needs. This flexible, modular structure allows OSeMOSYS to be used for a wide range of applications of different scales, complexities, and objectives.</p>
+<div class="section" id="objective-function">
+<h3>Objective function<a class="headerlink" href="#objective-function" title="Permalink to this headline">¶</a></h3>
+<p>This equation represents the overall objective of the model. The default in OSeMOSYS is to minimise the total system cost, over the entire model period.</p>
+<div class="highlight-gnumathprog"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span>minimize cost: sum{r in REGION, y in YEAR} TotalDiscountedCost[r,y];
+</pre></div>
+</td></tr></table></div>
+</div>
+<div class="section" id="rate-of-demand">
+<h3>Rate of demand<a class="headerlink" href="#rate-of-demand" title="Permalink to this headline">¶</a></h3>
+<p>The equation below is used to generate the term <em>RateOfDemand</em>, from the user-provided data for <em>SpecifiedAnnualDemand</em> and <em>SpecifiedDemandProfile</em>. The <em>RateOfDemand</em> is defined for each combination of commodity, TimeSlice and Year.</p>
+<div class="highlight-gnumathprog"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2</pre></div></td><td class="code"><div class="highlight"><pre><span></span>s.t. EQ_SpecifiedDemand{r in REGION, l in TIMESLICE, f in FUEL, y in YEAR}: 
+	SpecifiedAnnualDemand[r,f,y]*SpecifiedDemandProfile[r,f,l,y] / YearSplit[l,y]=RateOfDemand[r,l,f,y];
+</pre></div>
+</td></tr></table></div>
+</div>
+<div class="section" id="capacity-adequacy-a">
+<h3>Capacity Adequacy A<a class="headerlink" href="#capacity-adequacy-a" title="Permalink to this headline">¶</a></h3>
+<p>Used to first calculate total capacity of each technology for each year based on existing capacity from before the model period (<em>ResidualCapacity</em>), <em>AccumulatedNewCapacity</em> during the modelling period, and <em>NewCapacity</em> installed in each year. It is then ensured that this Capacity is sufficient to meet the <em>RateOfTotalActivity</em> in each TimeSlice and Year. An additional constraint based on the size, or capacity, of each unit of a Technology is included (<em>CapacityOfOneTechnologyUnit</em>). This stipulates that the capacity of certain Technology can only be a multiple of the user-defined <em>CapacityOfOneTechnologyUnit</em>.</p>
+<div class="highlight-gnumathprog"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14</pre></div></td><td class="code"><div class="highlight"><pre><span></span>s.t. CAa1_TotalNewCapacity{r in REGION, t in TECHNOLOGY, y in YEAR}:
+	AccumulatedNewCapacity[r,t,y] = sum{yy in YEAR: y-yy &lt; OperationalLife[r,t] &amp;&amp; y-yy&gt;=0} NewCapacity[r,t,yy];
+
+s.t. CAa2_TotalAnnualCapacity{r in REGION, t in TECHNOLOGY, y in YEAR}: 
+	AccumulatedNewCapacity[r,t,y]+ ResidualCapacity[r,t,y] = TotalCapacityAnnual[r,t,y];
+
+s.t. CAa3_TotalActivityOfEachTechnology{r in REGION, t in TECHNOLOGY, l in TIMESLICE, y in YEAR}: 
+	sum{m in MODE_OF_OPERATION} RateOfActivity[r,l,t,m,y] = RateOfTotalActivity[r,t,l,y];
+
+s.t. CAa4_Constraint_Capacity{r in REGION, l in TIMESLICE, t in TECHNOLOGY, y in YEAR}: 
+	RateOfTotalActivity[r,t,l,y] &lt;= TotalCapacityAnnual[r,t,y] * CapacityFactor[r,t,l,y]*CapacityToActivityUnit[r,t];
+
+s.t. CAa5_TotalNewCapacity{r in REGION, t in TECHNOLOGY, y in YEAR: 
+	CapacityOfOneTechnologyUnit[r,t,y]&lt;&gt;0}: CapacityOfOneTechnologyUnit[r,t,y]*NumberOfNewTechnologyUnits[r,t,y] = NewCapacity[r,t,y];
+</pre></div>
+</td></tr></table></div>
+<p>NOTE: OSeMOSYS uses Mixed Integer Programming to solve models that define <em>CapacityOfTechnologyUnit</em>. Using this parameter is likely to increase the model computation time.</p>
+</div>
+<div class="section" id="capacity-adequacy-b">
+<h3>Capacity Adequacy B<a class="headerlink" href="#capacity-adequacy-b" title="Permalink to this headline">¶</a></h3>
+<p>Ensures that adequate capacity of technologies is present to at least meet the average annual demand.</p>
+<div class="highlight-gnumathprog"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2</pre></div></td><td class="code"><div class="highlight"><pre><span></span>s.t. CAb1_PlannedMaintenance{r in REGION, t in TECHNOLOGY, y in YEAR}: 
+	sum{l in TIMESLICE} RateOfTotalActivity[r,t,l,y]*YearSplit[l,y] &lt;= sum{l in TIMESLICE} (TotalCapacityAnnual[r,t,y]*CapacityFactor[r,t,l,y]*YearSplit[l,y])* AvailabilityFactor[r,t,y]*CapacityToActivityUnit[r,t];
+</pre></div>
+</td></tr></table></div>
+</div>
+<div class="section" id="energy-balance-a">
+<h3>Energy Balance A<a class="headerlink" href="#energy-balance-a" title="Permalink to this headline">¶</a></h3>
+<p>Ensures that demand for each commodity is met in each TimeSlice.</p>
+<div class="highlight-gnumathprog"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32</pre></div></td><td class="code"><div class="highlight"><pre><span></span>s.t. EBa1_RateOfFuelProduction1{r in REGION, l in TIMESLICE, f in FUEL, t in TECHNOLOGY, m in MODE_OF_OPERATION, y in YEAR: OutputActivityRatio[r,t,f,m,y] &lt;&gt;0}:  
+	RateOfActivity[r,l,t,m,y]*OutputActivityRatio[r,t,f,m,y]  = RateOfProductionByTechnologyByMode[r,l,t,m,f,y];
+
+s.t. EBa2_RateOfFuelProduction2{r in REGION, l in TIMESLICE, f in FUEL, t in TECHNOLOGY, y in YEAR}: 
+	sum{m in MODE_OF_OPERATION: OutputActivityRatio[r,t,f,m,y] &lt;&gt;0} RateOfProductionByTechnologyByMode[r,l,t,m,f,y] = RateOfProductionByTechnology[r,l,t,f,y];
+
+s.t. EBa3_RateOfFuelProduction3{r in REGION, l in TIMESLICE, f in FUEL, y in YEAR}: 
+	sum{t in TECHNOLOGY} RateOfProductionByTechnology[r,l,t,f,y]  =  RateOfProduction[r,l,f,y];
+
+s.t. EBa4_RateOfFuelUse1{r in REGION, l in TIMESLICE, f in FUEL, t in TECHNOLOGY, m in MODE_OF_OPERATION, y in YEAR: InputActivityRatio[r,t,f,m,y]&lt;&gt;0}: 
+	RateOfActivity[r,l,t,m,y]*InputActivityRatio[r,t,f,m,y]  = RateOfUseByTechnologyByMode[r,l,t,m,f,y];
+
+s.t. EBa5_RateOfFuelUse2{r in REGION, l in TIMESLICE, f in FUEL, t in TECHNOLOGY, y in YEAR}: 
+	sum{m in MODE_OF_OPERATION: InputActivityRatio[r,t,f,m,y]&lt;&gt;0} RateOfUseByTechnologyByMode[r,l,t,m,f,y] = RateOfUseByTechnology[r,l,t,f,y];
+
+s.t. EBa6_RateOfFuelUse3{r in REGION, l in TIMESLICE, f in FUEL, y in YEAR}: 
+	sum{t in TECHNOLOGY} RateOfUseByTechnology[r,l,t,f,y]  = RateOfUse[r,l,f,y];
+
+s.t. EBa7_EnergyBalanceEachTS1{r in REGION, l in TIMESLICE, f in FUEL, y in YEAR}: 
+	RateOfProduction[r,l,f,y]*YearSplit[l,y] = Production[r,l,f,y];
+
+s.t. EBa8_EnergyBalanceEachTS2{r in REGION, l in TIMESLICE, f in FUEL, y in YEAR}: 	
+	RateOfUse[r,l,f,y]*YearSplit[l,y] = Use[r,l,f,y];
+
+s.t. EBa9_EnergyBalanceEachTS3{r in REGION, l in TIMESLICE, f in FUEL, y in YEAR}: 
+	RateOfDemand[r,l,f,y]*YearSplit[l,y] = Demand[r,l,f,y];
+
+s.t. EBa10_EnergyBalanceEachTS4{r in REGION, rr in REGION, l in TIMESLICE, f in FUEL, y in YEAR}: 
+	Trade[r,rr,l,f,y] = -Trade[rr,r,l,f,y];
+
+s.t. EBa11_EnergyBalanceEachTS5{r in REGION, l in TIMESLICE, f in FUEL, y in YEAR}: 
+	Production[r,l,f,y] &gt;= Demand[r,l,f,y] + Use[r,l,f,y] + sum{rr in REGION} Trade[r,rr,l,f,y]*TradeRoute[r,rr,f,y];
+</pre></div>
+</td></tr></table></div>
+</div>
+<div class="section" id="energy-balance-b">
+<h3>Energy Balance B<a class="headerlink" href="#energy-balance-b" title="Permalink to this headline">¶</a></h3>
+<p>Ensures that demand for each commodity is met in each Year.</p>
+<div class="highlight-gnumathprog"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11</pre></div></td><td class="code"><div class="highlight"><pre><span></span>s.t. EBb1_EnergyBalanceEachYear1{r in REGION, f in FUEL, y in YEAR}: 
+	sum{l in TIMESLICE} Production[r,l,f,y] = ProductionAnnual[r,f,y];
+
+s.t. EBb2_EnergyBalanceEachYear2{r in REGION, f in FUEL, y in YEAR}: 
+	sum{l in TIMESLICE} Use[r,l,f,y] = UseAnnual[r,f,y];
+
+s.t. EBb3_EnergyBalanceEachYear3{r in REGION, rr in REGION, f in FUEL, y in YEAR}: 
+	sum{l in TIMESLICE} Trade[r,rr,l,f,y] = TradeAnnual[r,rr,f,y];
+
+s.t. EBb4_EnergyBalanceEachYear4{r in REGION, f in FUEL, y in YEAR}: 
+	ProductionAnnual[r,f,y] &gt;= UseAnnual[r,f,y] + sum{rr in REGION} TradeAnnual[r,rr,f,y]*TradeRoute[r,rr,f,y] + AccumulatedAnnualDemand[r,f,y];
+</pre></div>
+</td></tr></table></div>
+</div>
+<div class="section" id="accounting-technology-production-use">
+<h3>Accounting Technology Production/Use<a class="headerlink" href="#accounting-technology-production-use" title="Permalink to this headline">¶</a></h3>
+<p>Accounting equations used to generate specific intermediate variables: <em>ProductionByTechnology</em>, <em>UseBytechnology</em>, <em>TotalAnnualTechnologyActivityByMode</em>, and <em>ModelPeriodCostByRegion</em>.</p>
+<div class="highlight-gnumathprog"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11</pre></div></td><td class="code"><div class="highlight"><pre><span></span>s.t. Acc1_FuelProductionByTechnology{r in REGION, l in TIMESLICE, t in TECHNOLOGY, f in FUEL, y in YEAR}: 
+	RateOfProductionByTechnology[r,l,t,f,y] * YearSplit[l,y] = ProductionByTechnology[r,l,t,f,y];
+
+s.t. Acc2_FuelUseByTechnology{r in REGION, l in TIMESLICE, t in TECHNOLOGY, f in FUEL, y in YEAR}: 
+	RateOfUseByTechnology[r,l,t,f,y] * YearSplit[l,y] = UseByTechnology[r,l,t,f,y];
+
+s.t. Acc3_AverageAnnualRateOfActivity{r in REGION, t in TECHNOLOGY, m in MODE_OF_OPERATION, y in YEAR}: 
+	sum{l in TIMESLICE} RateOfActivity[r,l,t,m,y]*YearSplit[l,y] = TotalAnnualTechnologyActivityByMode[r,t,m,y];
+
+s.t. Acc4_ModelPeriodCostByRegion{r in REGION}:
+	sum{y in YEAR}TotalDiscountedCost[r,y] = ModelPeriodCostByRegion[r];
+</pre></div>
+</td></tr></table></div>
+</div>
+<div class="section" id="storage-equations">
+<h3>Storage Equations<a class="headerlink" href="#storage-equations" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-gnumathprog"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32</pre></div></td><td class="code"><div class="highlight"><pre><span></span>s.t. S1_RateOfStorageCharge{r in REGION, s in STORAGE, ls in SEASON, ld in DAYTYPE, lh in DAILYTIMEBRACKET, y in YEAR}: 
+	sum{t in TECHNOLOGY, m in MODE_OF_OPERATION, l in TIMESLICE:TechnologyToStorage[r,t,s,m]&gt;0} RateOfActivity[r,l,t,m,y] * TechnologyToStorage[r,t,s,m] * Conversionls[l,ls] * Conversionld[l,ld] * Conversionlh[l,lh] = RateOfStorageCharge[r,s,ls,ld,lh,y];
+
+s.t. S2_RateOfStorageDischarge{r in REGION, s in STORAGE, ls in SEASON, ld in DAYTYPE, lh in DAILYTIMEBRACKET, y in YEAR}: 
+	sum{t in TECHNOLOGY, m in MODE_OF_OPERATION, l in TIMESLICE:TechnologyFromStorage[r,t,s,m]&gt;0} RateOfActivity[r,l,t,m,y] * TechnologyFromStorage[r,t,s,m] * Conversionls[l,ls] * Conversionld[l,ld] * Conversionlh[l,lh] = RateOfStorageDischarge[r,s,ls,ld,lh,y];
+
+s.t. S3_NetChargeWithinYear{r in REGION, s in STORAGE, ls in SEASON, ld in DAYTYPE, lh in DAILYTIMEBRACKET, y in YEAR}: 
+	sum{l in TIMESLICE:Conversionls[l,ls]&gt;0&amp;&amp;Conversionld[l,ld]&gt;0&amp;&amp;Conversionlh[l,lh]&gt;0}  (RateOfStorageCharge[r,s,ls,ld,lh,y] - RateOfStorageDischarge[r,s,ls,ld,lh,y]) * YearSplit[l,y] * Conversionls[l,ls] * Conversionld[l,ld] * Conversionlh[l,lh] = NetChargeWithinYear[r,s,ls,ld,lh,y];
+
+s.t. S4_NetChargeWithinDay{r in REGION, s in STORAGE, ls in SEASON, ld in DAYTYPE, lh in DAILYTIMEBRACKET, y in YEAR}: 
+	(RateOfStorageCharge[r,s,ls,ld,lh,y] - RateOfStorageDischarge[r,s,ls,ld,lh,y]) * DaySplit[lh,y] = NetChargeWithinDay[r,s,ls,ld,lh,y];
+
+s.t. S5_and_S6_StorageLevelYearStart{r in REGION, s in STORAGE, y in YEAR}: if y = min{yy in YEAR} min(yy) then StorageLevelStart[r,s] 
+																	else StorageLevelYearStart[r,s,y-1] + sum{ls in SEASON, ld in DAYTYPE, lh in DAILYTIMEBRACKET} NetChargeWithinYear[r,s,ls,ld,lh,y-1]
+																	= StorageLevelYearStart[r,s,y];
+
+s.t. S7_and_S8_StorageLevelYearFinish{r in REGION, s in STORAGE, y in YEAR}: if y &lt; max{yy in YEAR} max(yy) then StorageLevelYearStart[r,s,y+1]
+																	else StorageLevelYearStart[r,s,y] + sum{ls in SEASON, ld in DAYTYPE, lh in DAILYTIMEBRACKET} NetChargeWithinYear[r,s,ls,ld,lh,y] 
+																	= StorageLevelYearFinish[r,s,y];	
+
+s.t. S9_and_S10_StorageLevelSeasonStart{r in REGION, s in STORAGE, ls in SEASON, y in YEAR}: if ls = min{lsls in SEASON} min(lsls) then StorageLevelYearStart[r,s,y] 
+																	else StorageLevelSeasonStart[r,s,ls-1,y] + sum{ld in DAYTYPE, lh in DAILYTIMEBRACKET} NetChargeWithinYear[r,s,ls-1,ld,lh,y] 
+																	= StorageLevelSeasonStart[r,s,ls,y];
+
+s.t. S11_and_S12_StorageLevelDayTypeStart{r in REGION, s in STORAGE, ls in SEASON, ld in DAYTYPE, y in YEAR}: if ld = min{ldld in DAYTYPE} min(ldld) then StorageLevelSeasonStart[r,s,ls,y] 
+																	else StorageLevelDayTypeStart[r,s,ls,ld-1,y] + sum{lh in DAILYTIMEBRACKET} NetChargeWithinDay[r,s,ls,ld-1,lh,y] * DaysInDayType[ls,ld-1,y]
+																	= StorageLevelDayTypeStart[r,s,ls,ld,y];
+
+s.t. S13_and_S14_and_S15_StorageLevelDayTypeFinish{r in REGION, s in STORAGE, ls in SEASON, ld in DAYTYPE, y in YEAR}:	if ls = max{lsls in SEASON} max(lsls) &amp;&amp; ld = max{ldld in DAYTYPE} max(ldld) then StorageLevelYearFinish[r,s,y] 
+																	else if ld = max{ldld in DAYTYPE} max(ldld) then StorageLevelSeasonStart[r,s,ls+1,y]
+																	else StorageLevelDayTypeFinish[r,s,ls,ld+1,y] - sum{lh in DAILYTIMEBRACKET} NetChargeWithinDay[r,s,ls,ld+1,lh,y] * DaysInDayType[ls,ld+1,y]
+																	= StorageLevelDayTypeFinish[r,s,ls,ld,y];	
+</pre></div>
+</td></tr></table></div>
+</div>
+<div class="section" id="storage-constraints">
+<h3>Storage Constraints<a class="headerlink" href="#storage-constraints" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-gnumathprog"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27</pre></div></td><td class="code"><div class="highlight"><pre><span></span>s.t. SC1_LowerLimit_BeginningOfDailyTimeBracketOfFirstInstanceOfDayTypeInFirstWeekConstraint{r in REGION, s in STORAGE, ls in SEASON, ld in DAYTYPE, lh in DAILYTIMEBRACKET, y in YEAR}: 
+	0 &lt;= (StorageLevelDayTypeStart[r,s,ls,ld,y]+sum{lhlh in DAILYTIMEBRACKET:lh-lhlh&gt;0} NetChargeWithinDay[r,s,ls,ld,lhlh,y])-StorageLowerLimit[r,s,y];								
+
+s.t. SC1_UpperLimit_BeginningOfDailyTimeBracketOfFirstInstanceOfDayTypeInFirstWeekConstraint{r in REGION, s in STORAGE, ls in SEASON, ld in DAYTYPE, lh in DAILYTIMEBRACKET, y in YEAR}: 
+	(StorageLevelDayTypeStart[r,s,ls,ld,y]+sum{lhlh in DAILYTIMEBRACKET:lh-lhlh&gt;0} NetChargeWithinDay[r,s,ls,ld,lhlh,y])-StorageUpperLimit[r,s,y] &lt;= 0;								
+
+s.t. SC2_LowerLimit_EndOfDailyTimeBracketOfLastInstanceOfDayTypeInFirstWeekConstraint{r in REGION, s in STORAGE, ls in SEASON, ld in DAYTYPE, lh in DAILYTIMEBRACKET, y in YEAR}: 
+	0 &lt;= if ld &gt; min{ldld in DAYTYPE} min(ldld) then (StorageLevelDayTypeStart[r,s,ls,ld,y]-sum{lhlh in DAILYTIMEBRACKET:lh-lhlh&lt;0} NetChargeWithinDay[r,s,ls,ld-1,lhlh,y])-StorageLowerLimit[r,s,y];																										
+
+s.t. SC2_UpperLimit_EndOfDailyTimeBracketOfLastInstanceOfDayTypeInFirstWeekConstraint{r in REGION, s in STORAGE, ls in SEASON, ld in DAYTYPE, lh in DAILYTIMEBRACKET, y in YEAR}: 
+	if ld &gt; min{ldld in DAYTYPE} min(ldld) then (StorageLevelDayTypeStart[r,s,ls,ld,y]-sum{lhlh in DAILYTIMEBRACKET:lh-lhlh&lt;0} NetChargeWithinDay[r,s,ls,ld-1,lhlh,y])-StorageUpperLimit[r,s,y] &lt;= 0;					
+
+s.t. SC3_LowerLimit_EndOfDailyTimeBracketOfLastInstanceOfDayTypeInLastWeekConstraint{r in REGION, s in STORAGE, ls in SEASON, ld in DAYTYPE, lh in DAILYTIMEBRACKET, y in YEAR}:  
+	0 &lt;= (StorageLevelDayTypeFinish[r,s,ls,ld,y] - sum{lhlh in DAILYTIMEBRACKET:lh-lhlh&lt;0} NetChargeWithinDay[r,s,ls,ld,lhlh,y])-StorageLowerLimit[r,s,y];																										
+
+s.t. SC3_UpperLimit_EndOfDailyTimeBracketOfLastInstanceOfDayTypeInLastWeekConstraint{r in REGION, s in STORAGE, ls in SEASON, ld in DAYTYPE, lh in DAILYTIMEBRACKET, y in YEAR}:  
+	(StorageLevelDayTypeFinish[r,s,ls,ld,y] - sum{lhlh in DAILYTIMEBRACKET:lh-lhlh&lt;0} NetChargeWithinDay[r,s,ls,ld,lhlh,y])-StorageUpperLimit[r,s,y] &lt;= 0;
+
+s.t. SC4_LowerLimit_BeginningOfDailyTimeBracketOfFirstInstanceOfDayTypeInLastWeekConstraint{r in REGION, s in STORAGE, ls in SEASON, ld in DAYTYPE, lh in DAILYTIMEBRACKET, y in YEAR}: 	
+	0 &lt;= if ld &gt; min{ldld in DAYTYPE} min(ldld) then (StorageLevelDayTypeFinish[r,s,ls,ld-1,y]+sum{lhlh in DAILYTIMEBRACKET:lh-lhlh&gt;0} NetChargeWithinDay[r,s,ls,ld,lhlh,y])-StorageLowerLimit[r,s,y];
+
+s.t. SC4_UpperLimit_BeginningOfDailyTimeBracketOfFirstInstanceOfDayTypeInLastWeekConstraint{r in REGION, s in STORAGE, ls in SEASON, ld in DAYTYPE, lh in DAILYTIMEBRACKET, y in YEAR}: 
+	if ld &gt; min{ldld in DAYTYPE} min(ldld) then (StorageLevelDayTypeFinish[r,s,ls,ld-1,y]+sum{lhlh in DAILYTIMEBRACKET:lh-lhlh&gt;0} NetChargeWithinDay[r,s,ls,ld,lhlh,y])-StorageUpperLimit[r,s,y] &lt;= 0;										
+
+s.t. SC5_MaxChargeConstraint{r in REGION, s in STORAGE, ls in SEASON, ld in DAYTYPE, lh in DAILYTIMEBRACKET, y in YEAR}: RateOfStorageCharge[r,s,ls,ld,lh,y] &lt;= StorageMaxChargeRate[r,s];
+
+s.t. SC6_MaxDischargeConstraint{r in REGION, s in STORAGE, ls in SEASON, ld in DAYTYPE, lh in DAILYTIMEBRACKET, y in YEAR}: RateOfStorageDischarge[r,s,ls,ld,lh,y] &lt;= StorageMaxDischargeRate[r,s];
+</pre></div>
+</td></tr></table></div>
+</div>
+<div class="section" id="storage-investments">
+<h3>Storage Investments<a class="headerlink" href="#storage-investments" title="Permalink to this headline">¶</a></h3>
+<p>Calculates the total discounted capital costs expenditure for each storage technology in each year.</p>
+<div class="highlight-gnumathprog"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29</pre></div></td><td class="code"><div class="highlight"><pre><span></span>s.t. SI1_StorageUpperLimit{r in REGION, s in STORAGE, y in YEAR}: 
+	AccumulatedNewStorageCapacity[r,s,y]+ResidualStorageCapacity[r,s,y] = StorageUpperLimit[r,s,y];
+
+s.t. SI2_StorageLowerLimit{r in REGION, s in STORAGE, y in YEAR}: 
+	MinStorageCharge[r,s,y]*StorageUpperLimit[r,s,y] = StorageLowerLimit[r,s,y];
+
+s.t. SI3_TotalNewStorage{r in REGION, s in STORAGE, y in YEAR}: 
+	sum{yy in YEAR: y-yy &lt; OperationalLifeStorage[r,s] &amp;&amp; y-yy&gt;=0} NewStorageCapacity[r,s,yy]=AccumulatedNewStorageCapacity[r,s,y];
+
+s.t. SI4_UndiscountedCapitalInvestmentStorage{r in REGION, s in STORAGE, y in YEAR}: 
+	CapitalCostStorage[r,s,y] * NewStorageCapacity[r,s,y] = CapitalInvestmentStorage[r,s,y];
+
+s.t. SI5_DiscountingCapitalInvestmentStorage{r in REGION, s in STORAGE, y in YEAR}: 
+	CapitalInvestmentStorage[r,s,y]/((1+DiscountRate[r])^(y-min{yy in YEAR} min(yy))) = DiscountedCapitalInvestmentStorage[r,s,y];
+
+s.t. SI6_SalvageValueStorageAtEndOfPeriod1{r in REGION, s in STORAGE, y in YEAR: 
+	(y+OperationalLifeStorage[r,s]-1) &lt;= (max{yy in YEAR} max(yy))}: 0 = SalvageValueStorage[r,s,y];
+
+s.t. SI7_SalvageValueStorageAtEndOfPeriod2{r in REGION, s in STORAGE, y in YEAR: 
+	(DepreciationMethod[r]=1 &amp;&amp; (y+OperationalLifeStorage[r,s]-1) &gt; (max{yy in YEAR} max(yy)) &amp;&amp; DiscountRate[r]=0) || (DepreciationMethod[r]=2 &amp;&amp; (y+OperationalLifeStorage[r,s]-1) &gt; (max{yy in YEAR} max(yy)))}: CapitalInvestmentStorage[r,s,y]*(1-(max{yy in YEAR} max(yy) - y+1)/OperationalLifeStorage[r,s]) = SalvageValueStorage[r,s,y];
+
+s.t. SI8_SalvageValueStorageAtEndOfPeriod3{r in REGION, s in STORAGE, y in YEAR: 
+	DepreciationMethod[r]=1 &amp;&amp; (y+OperationalLifeStorage[r,s]-1) &gt; (max{yy in YEAR} max(yy)) &amp;&amp; DiscountRate[r]&gt;0}: CapitalInvestmentStorage[r,s,y]*(1-(((1+DiscountRate[r])^(max{yy in YEAR} max(yy) - y+1)-1)/((1+DiscountRate[r])^OperationalLifeStorage[r,s]-1))) = SalvageValueStorage[r,s,y];
+
+s.t. SI9_SalvageValueStorageDiscountedToStartYear{r in REGION, s in STORAGE, y in YEAR}: 
+	SalvageValueStorage[r,s,y]/((1+DiscountRate[r])^(max{yy in YEAR} max(yy)-min{yy in YEAR} min(yy)+1)) = DiscountedSalvageValueStorage[r,s,y];
+
+s.t. SI10_TotalDiscountedCostByStorage{r in REGION, s in STORAGE, y in YEAR}: 
+	DiscountedCapitalInvestmentStorage[r,s,y]-DiscountedSalvageValueStorage[r,s,y] = TotalDiscountedStorageCost[r,s,y];
+</pre></div>
+</td></tr></table></div>
+</div>
+<div class="section" id="capital-costs">
+<h3>Capital Costs<a class="headerlink" href="#capital-costs" title="Permalink to this headline">¶</a></h3>
+<p>Calculates the total discounted capital cost expenditure for each technology in each year.</p>
+<div class="highlight-gnumathprog"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5</pre></div></td><td class="code"><div class="highlight"><pre><span></span>s.t. CC1_UndiscountedCapitalInvestment{r in REGION, t in TECHNOLOGY, y in YEAR}: 
+	CapitalCost[r,t,y] * NewCapacity[r,t,y] = CapitalInvestment[r,t,y];
+
+s.t. CC2_DiscountingCapitalInvestment{r in REGION, t in TECHNOLOGY, y in YEAR}: 
+	CapitalInvestment[r,t,y]/((1+DiscountRate[r])^(y-min{yy in YEAR} min(yy))) = DiscountedCapitalInvestment[r,t,y];
+</pre></div>
+</td></tr></table></div>
+</div>
+<div class="section" id="salvage-value">
+<h3>Salvage Value<a class="headerlink" href="#salvage-value" title="Permalink to this headline">¶</a></h3>
+<p>Calculates the fraction of the initial capital cost that can be recouped at the end of a technologies operational life. The salvage value can be calculated using one of two depreciation methods: straight line and sinking fund.</p>
+<div class="highlight-gnumathprog"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11</pre></div></td><td class="code"><div class="highlight"><pre><span></span>s.t. SV1_SalvageValueAtEndOfPeriod1{r in REGION, t in TECHNOLOGY, y in YEAR: 
+	DepreciationMethod[r]=1 &amp;&amp; (y + OperationalLife[r,t]-1) &gt; (max{yy in YEAR} max(yy)) &amp;&amp; DiscountRate[r]&gt;0}: SalvageValue[r,t,y] = CapitalCost[r,t,y]*NewCapacity[r,t,y]*(1-(((1+DiscountRate[r])^(max{yy in YEAR} max(yy) - y+1)-1)/((1+DiscountRate[r])^OperationalLife[r,t]-1))); 
+
+s.t. SV2_SalvageValueAtEndOfPeriod2{r in REGION, t in TECHNOLOGY, y in YEAR: 
+	(DepreciationMethod[r]=1 &amp;&amp; (y + OperationalLife[r,t]-1) &gt; (max{yy in YEAR} max(yy)) &amp;&amp; DiscountRate[r]=0) || (DepreciationMethod[r]=2 &amp;&amp; (y + OperationalLife[r,t]-1) &gt; (max{yy in YEAR} max(yy)))}: SalvageValue[r,t,y] = CapitalCost[r,t,y]*NewCapacity[r,t,y]*(1-(max{yy in YEAR} max(yy) - y+1)/OperationalLife[r,t]); 
+
+s.t. SV3_SalvageValueAtEndOfPeriod3{r in REGION, t in TECHNOLOGY, y in YEAR: 
+	(y + OperationalLife[r,t]-1) &lt;= (max{yy in YEAR} max(yy))}: SalvageValue[r,t,y] = 0;
+
+s.t. SV4_SalvageValueDiscountedToStartYear{r in REGION, t in TECHNOLOGY, y in YEAR}: 
+	DiscountedSalvageValue[r,t,y] = SalvageValue[r,t,y]/((1+DiscountRate[r])^(1+max{yy in YEAR} max(yy)-min{yy in YEAR} min(yy)));
+</pre></div>
+</td></tr></table></div>
+</div>
+<div class="section" id="operating-costs">
+<h3>Operating Costs<a class="headerlink" href="#operating-costs" title="Permalink to this headline">¶</a></h3>
+<p>Calculates the total variable and fixed operating costs for each technology, in each year.</p>
+<div class="highlight-gnumathprog"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11</pre></div></td><td class="code"><div class="highlight"><pre><span></span>s.t. OC1_OperatingCostsVariable{r in REGION, t in TECHNOLOGY, l in TIMESLICE, y in YEAR}: 
+	sum{m in MODE_OF_OPERATION} TotalAnnualTechnologyActivityByMode[r,t,m,y]*VariableCost[r,t,m,y] = AnnualVariableOperatingCost[r,t,y];
+
+s.t. OC2_OperatingCostsFixedAnnual{r in REGION, t in TECHNOLOGY, y in YEAR}: 
+	TotalCapacityAnnual[r,t,y]*FixedCost[r,t,y] = AnnualFixedOperatingCost[r,t,y];
+
+s.t. OC3_OperatingCostsTotalAnnual{r in REGION, t in TECHNOLOGY, y in YEAR}: 
+	AnnualFixedOperatingCost[r,t,y]+AnnualVariableOperatingCost[r,t,y] = OperatingCost[r,t,y];
+
+s.t. OC4_DiscountedOperatingCostsTotalAnnual{r in REGION, t in TECHNOLOGY, y in YEAR}: 
+	OperatingCost[r,t,y]/((1+DiscountRate[r])^(y-min{yy in YEAR} min(yy)+0.5)) = DiscountedOperatingCost[r,t,y];
+</pre></div>
+</td></tr></table></div>
+</div>
+<div class="section" id="total-discounted-costs">
+<h3>Total Discounted Costs<a class="headerlink" href="#total-discounted-costs" title="Permalink to this headline">¶</a></h3>
+<p>Calculates the total discounted system cost over the entire model period to give the <em>TotalDiscountedCost</em>. This is the variable that is minimized in the model’s objective function.</p>
+<div class="highlight-gnumathprog"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5</pre></div></td><td class="code"><div class="highlight"><pre><span></span>s.t. TDC1_TotalDiscountedCostByTechnology{r in REGION, t in TECHNOLOGY, y in YEAR}: 
+	DiscountedOperatingCost[r,t,y]+DiscountedCapitalInvestment[r,t,y]+DiscountedTechnologyEmissionsPenalty[r,t,y]-DiscountedSalvageValue[r,t,y] = TotalDiscountedCostByTechnology[r,t,y];
+
+s.t. TDC2_TotalDiscountedCost{r in REGION, y in YEAR}: 
+	sum{t in TECHNOLOGY} TotalDiscountedCostByTechnology[r,t,y]+sum{s in STORAGE} TotalDiscountedStorageCost[r,s,y] = TotalDiscountedCost[r,y];
+</pre></div>
+</td></tr></table></div>
+</div>
+<div class="section" id="total-capacity-constraints">
+<h3>Total Capacity Constraints<a class="headerlink" href="#total-capacity-constraints" title="Permalink to this headline">¶</a></h3>
+<p>Ensures that the total capacity of each technology in each year is greater than and less than the user-defined parameters <em>TotalAnnualMinCapacityInvestment</em> and <em>TotalAnnualMaxCapacityInvestment</em> respectively.</p>
+<div class="highlight-gnumathprog"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5</pre></div></td><td class="code"><div class="highlight"><pre><span></span>s.t. TCC1_TotalAnnualMaxCapacityConstraint{r in REGION, t in TECHNOLOGY, y in YEAR}: 
+	TotalCapacityAnnual[r,t,y] &lt;= TotalAnnualMaxCapacity[r,t,y];
+
+s.t. TCC2_TotalAnnualMinCapacityConstraint{r in REGION, t in TECHNOLOGY, y in YEAR: 
+	TotalAnnualMinCapacity[r,t,y]&gt;0}: TotalCapacityAnnual[r,t,y] &gt;= TotalAnnualMinCapacity[r,t,y];
+</pre></div>
+</td></tr></table></div>
+</div>
+<div class="section" id="new-capacity-constraints">
+<h3>New Capacity Constraints<a class="headerlink" href="#new-capacity-constraints" title="Permalink to this headline">¶</a></h3>
+<p>Ensures that the new capacity of each technology installed in each year is greater than and less than the user-defined parameters <em>TotalAnnualMinCapacityInvestment</em> and <em>TotalAnnualMaxCapacityInvestment</em> respectively.</p>
+<div class="highlight-gnumathprog"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5</pre></div></td><td class="code"><div class="highlight"><pre><span></span>s.t. NCC1_TotalAnnualMaxNewCapacityConstraint{r in REGION, t in TECHNOLOGY, y in YEAR}: 
+	NewCapacity[r,t,y] &lt;= TotalAnnualMaxCapacityInvestment[r,t,y];
+
+s.t. NCC2_TotalAnnualMinNewCapacityConstraint{r in REGION, t in TECHNOLOGY, y in YEAR: 
+	TotalAnnualMinCapacityInvestment[r,t,y]&gt;0}: NewCapacity[r,t,y] &gt;= TotalAnnualMinCapacityInvestment[r,t,y];
+</pre></div>
+</td></tr></table></div>
+</div>
+<div class="section" id="annual-activity-constraints">
+<h3>Annual Activity Constraints<a class="headerlink" href="#annual-activity-constraints" title="Permalink to this headline">¶</a></h3>
+<p>Ensures that the total activity of each technology over each year is greater than and less than the user-defined parameters <em>TotalTechnologyAnnualActivityLowerLimit</em> and <em>TotalTechnologyAnnualActivityUpperLimit</em> respectively.</p>
+<div class="highlight-gnumathprog"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8</pre></div></td><td class="code"><div class="highlight"><pre><span></span>s.t. AAC1_TotalAnnualTechnologyActivity{r in REGION, t in TECHNOLOGY, y in YEAR}: 
+	sum{l in TIMESLICE} RateOfTotalActivity[r,t,l,y]*YearSplit[l,y] = TotalTechnologyAnnualActivity[r,t,y];
+
+s.t. AAC2_TotalAnnualTechnologyActivityUpperLimit{r in REGION, t in TECHNOLOGY, y in YEAR}: 
+	TotalTechnologyAnnualActivity[r,t,y] &lt;= TotalTechnologyAnnualActivityUpperLimit[r,t,y] ;
+
+s.t. AAC3_TotalAnnualTechnologyActivityLowerLimit{r in REGION, t in TECHNOLOGY, y in YEAR: 
+	TotalTechnologyAnnualActivityLowerLimit[r,t,y]&gt;0}: TotalTechnologyAnnualActivity[r,t,y] &gt;= TotalTechnologyAnnualActivityLowerLimit[r,t,y] ;
+</pre></div>
+</td></tr></table></div>
+</div>
+<div class="section" id="total-activity-constraints">
+<h3>Total Activity Constraints<a class="headerlink" href="#total-activity-constraints" title="Permalink to this headline">¶</a></h3>
+<p>Ensures that the total activity of each technology over the entire model period is greater than and less than the user-defined parameters <em>TotalTechnologyModelPeriodActivityLowerLimit</em> and <em>TotalTechnologyModelPeriodActivityUpperLimit</em> respectively.</p>
+<div class="highlight-gnumathprog"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8</pre></div></td><td class="code"><div class="highlight"><pre><span></span>s.t. TAC1_TotalModelHorizonTechnologyActivity{r in REGION, t in TECHNOLOGY}: 
+	sum{y in YEAR} TotalTechnologyAnnualActivity[r,t,y] = TotalTechnologyModelPeriodActivity[r,t];
+
+s.t. TAC2_TotalModelHorizonTechnologyActivityUpperLimit{r in REGION, t in TECHNOLOGY: 
+	TotalTechnologyModelPeriodActivityUpperLimit[r,t]&gt;0}: TotalTechnologyModelPeriodActivity[r,t] &lt;= TotalTechnologyModelPeriodActivityUpperLimit[r,t] ;
+
+s.t. TAC3_TotalModelHorizenTechnologyActivityLowerLimit{r in REGION, t in TECHNOLOGY: 
+	TotalTechnologyModelPeriodActivityLowerLimit[r,t]&gt;0}: TotalTechnologyModelPeriodActivity[r,t] &gt;= TotalTechnologyModelPeriodActivityLowerLimit[r,t] ;
+</pre></div>
+</td></tr></table></div>
+</div>
+<div class="section" id="reserve-margin-constraints">
+<h3>Reserve Margin Constraints<a class="headerlink" href="#reserve-margin-constraints" title="Permalink to this headline">¶</a></h3>
+<p>Ensures that sufficient reserve capacity of specific technologies (<em>ReserveMarginTagTechnology</em> = 1) is installed such that the user-defined <em>ReserveMargin</em> is maintained.</p>
+<div class="highlight-gnumathprog"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8</pre></div></td><td class="code"><div class="highlight"><pre><span></span>s.t. RM1_ReserveMargin_TechnologiesIncluded_In_Activity_Units{r in REGION, l in TIMESLICE, y in YEAR}: 
+	sum {t in TECHNOLOGY} TotalCapacityAnnual[r,t,y] * ReserveMarginTagTechnology[r,t,y] * CapacityToActivityUnit[r,t]	 = 	TotalCapacityInReserveMargin[r,y];
+
+s.t. RM2_ReserveMargin_FuelsIncluded{r in REGION, l in TIMESLICE, y in YEAR}: 
+	sum {f in FUEL} RateOfProduction[r,l,f,y] * ReserveMarginTagFuel[r,f,y] = DemandNeedingReserveMargin[r,l,y];
+
+s.t. RM3_ReserveMargin_Constraint{r in REGION, l in TIMESLICE, y in YEAR}: 
+	DemandNeedingReserveMargin[r,l,y] * ReserveMargin[r,y]&lt;= TotalCapacityInReserveMargin[r,y];
+</pre></div>
+</td></tr></table></div>
+</div>
+<div class="section" id="re-production-target">
+<h3>RE Production Target<a class="headerlink" href="#re-production-target" title="Permalink to this headline">¶</a></h3>
+<p>Ensures that production from technologies tagged as renewable energy technologies (<em>RETagTechnology</em> = 1) is at least equal to the user-defined renewable energy (RE) target.</p>
+<div class="highlight-gnumathprog"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14</pre></div></td><td class="code"><div class="highlight"><pre><span></span>s.t. RE1_FuelProductionByTechnologyAnnual{r in REGION, t in TECHNOLOGY, f in FUEL, y in YEAR}: 
+	sum{l in TIMESLICE} ProductionByTechnology[r,l,t,f,y] = ProductionByTechnologyAnnual[r,t,f,y];
+
+s.t. RE2_TechIncluded{r in REGION, y in YEAR}: 
+	sum{t in TECHNOLOGY, f in FUEL} ProductionByTechnologyAnnual[r,t,f,y]*RETagTechnology[r,t,y] = TotalREProductionAnnual[r,y];
+
+s.t. RE3_FuelIncluded{r in REGION, y in YEAR}: 
+	sum{l in TIMESLICE, f in FUEL} RateOfProduction[r,l,f,y]*YearSplit[l,y]*RETagFuel[r,f,y] = RETotalProductionOfTargetFuelAnnual[r,y]; 
+
+s.t. RE4_EnergyConstraint{r in REGION, y in YEAR}:
+	REMinProductionTarget[r,y]*RETotalProductionOfTargetFuelAnnual[r,y] &lt;= TotalREProductionAnnual[r,y];
+
+s.t. RE5_FuelUseByTechnologyAnnual{r in REGION, t in TECHNOLOGY, f in FUEL, y in YEAR}: 
+	sum{l in TIMESLICE} RateOfUseByTechnology[r,l,t,f,y]*YearSplit[l,y] = UseByTechnologyAnnual[r,t,f,y];
+</pre></div>
+</td></tr></table></div>
+</div>
+<div class="section" id="emissions-accounting">
+<h3>Emissions Accounting<a class="headerlink" href="#emissions-accounting" title="Permalink to this headline">¶</a></h3>
+<p>Calculates the annual and model period emissions from each technology, for each type of emission. It also calculates the total associated emission penalties, if any. Finally, it ensures that emissions are maintained before stipulated limits that may be defined for each year and/or the entire model period.</p>
+<div class="highlight-gnumathprog"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26</pre></div></td><td class="code"><div class="highlight"><pre><span></span>s.t. E1_AnnualEmissionProductionByMode{r in REGION, t in TECHNOLOGY, e in EMISSION, m in MODE_OF_OPERATION, y in YEAR}: 
+	EmissionActivityRatio[r,t,e,m,y]*TotalAnnualTechnologyActivityByMode[r,t,m,y]=AnnualTechnologyEmissionByMode[r,t,e,m,y];
+
+s.t. E2_AnnualEmissionProduction{r in REGION, t in TECHNOLOGY, e in EMISSION, y in YEAR}: 
+	sum{m in MODE_OF_OPERATION} AnnualTechnologyEmissionByMode[r,t,e,m,y] = AnnualTechnologyEmission[r,t,e,y];
+
+s.t. E3_EmissionsPenaltyByTechAndEmission{r in REGION, t in TECHNOLOGY, e in EMISSION, y in YEAR}: 
+	AnnualTechnologyEmission[r,t,e,y]*EmissionsPenalty[r,e,y] = AnnualTechnologyEmissionPenaltyByEmission[r,t,e,y];
+
+s.t. E4_EmissionsPenaltyByTechnology{r in REGION, t in TECHNOLOGY, y in YEAR}: 
+	sum{e in EMISSION} AnnualTechnologyEmissionPenaltyByEmission[r,t,e,y] = AnnualTechnologyEmissionsPenalty[r,t,y];
+
+s.t. E5_DiscountedEmissionsPenaltyByTechnology{r in REGION, t in TECHNOLOGY, y in YEAR}: 
+	AnnualTechnologyEmissionsPenalty[r,t,y]/((1+DiscountRate[r])^(y-min{yy in YEAR} min(yy)+0.5)) = DiscountedTechnologyEmissionsPenalty[r,t,y];
+
+s.t. E6_EmissionsAccounting1{r in REGION, e in EMISSION, y in YEAR}: 
+	sum{t in TECHNOLOGY} AnnualTechnologyEmission[r,t,e,y] = AnnualEmissions[r,e,y];
+
+s.t. E7_EmissionsAccounting2{r in REGION, e in EMISSION}: 
+	sum{y in YEAR} AnnualEmissions[r,e,y] = ModelPeriodEmissions[r,e]- ModelPeriodExogenousEmission[r,e];
+
+s.t. E8_AnnualEmissionsLimit{r in REGION, e in EMISSION, y in YEAR}: 
+	AnnualEmissions[r,e,y]+AnnualExogenousEmission[r,e,y] &lt;= AnnualEmissionLimit[r,e,y];
+
+s.t. E9_ModelPeriodEmissionsLimit{r in REGION, e in EMISSION}: 
+	ModelPeriodEmissions[r,e] &lt;= ModelPeriodEmissionLimit[r,e];
+</pre></div>
+</td></tr></table></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../manual_index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Structure of OSeMOSYS</a><ul>
+<li><a class="reference internal" href="#sets">Sets</a></li>
+<li><a class="reference internal" href="#parameters">Parameters</a></li>
+<li><a class="reference internal" href="#variables">Variables</a></li>
+<li><a class="reference internal" href="#equations">Equations</a><ul>
+<li><a class="reference internal" href="#objective-function">Objective function</a></li>
+<li><a class="reference internal" href="#rate-of-demand">Rate of demand</a></li>
+<li><a class="reference internal" href="#capacity-adequacy-a">Capacity Adequacy A</a></li>
+<li><a class="reference internal" href="#capacity-adequacy-b">Capacity Adequacy B</a></li>
+<li><a class="reference internal" href="#energy-balance-a">Energy Balance A</a></li>
+<li><a class="reference internal" href="#energy-balance-b">Energy Balance B</a></li>
+<li><a class="reference internal" href="#accounting-technology-production-use">Accounting Technology Production/Use</a></li>
+<li><a class="reference internal" href="#storage-equations">Storage Equations</a></li>
+<li><a class="reference internal" href="#storage-constraints">Storage Constraints</a></li>
+<li><a class="reference internal" href="#storage-investments">Storage Investments</a></li>
+<li><a class="reference internal" href="#capital-costs">Capital Costs</a></li>
+<li><a class="reference internal" href="#salvage-value">Salvage Value</a></li>
+<li><a class="reference internal" href="#operating-costs">Operating Costs</a></li>
+<li><a class="reference internal" href="#total-discounted-costs">Total Discounted Costs</a></li>
+<li><a class="reference internal" href="#total-capacity-constraints">Total Capacity Constraints</a></li>
+<li><a class="reference internal" href="#new-capacity-constraints">New Capacity Constraints</a></li>
+<li><a class="reference internal" href="#annual-activity-constraints">Annual Activity Constraints</a></li>
+<li><a class="reference internal" href="#total-activity-constraints">Total Activity Constraints</a></li>
+<li><a class="reference internal" href="#reserve-margin-constraints">Reserve Margin Constraints</a></li>
+<li><a class="reference internal" href="#re-production-target">RE Production Target</a></li>
+<li><a class="reference internal" href="#emissions-accounting">Emissions Accounting</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../manual_index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="Introduction.html" title="previous chapter">Introduction to OSeMOSYS</a></li>
+      <li>Next: <a href="Code versions.html" title="next chapter">Code versions</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/manual/Structure of OSeMOSYS.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, KTH-dESA.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.5.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/manual/Structure of OSeMOSYS.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,273 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Create a model in OSeMOSYS &#8212; OSeMOSYS Manual 0.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Debugging a model: useful tips" href="Debugging a model.html" />
+    <link rel="prev" title="Code versions" href="Code versions.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="create-a-model-in-osemosys">
+<h1>Create a model in OSeMOSYS<a class="headerlink" href="#create-a-model-in-osemosys" title="Permalink to this headline">¶</a></h1>
+<p>This section introduces the user to the basic components of any application of OSeMOSYS and describes the steps for the creation of a model. To this end, a sample case study, Atlantis, is used and examples from it are shown throughout the section. The concepts described here apply to any application, with due adjustments, and they are valid both in case interfaces are used or not.</p>
+<p>In the following subsections, <a class="reference internal" href="#the-atlantis-case-study">The Atlantis Case Study</a> describes the Atlantis sample case study, representing a country sharing features of developed and developing ones. <a class="reference internal" href="#how-to-build-a-model-in-osemosys">How to build a model in OSeMOSYS</a> shows the step-by-step creation of a model without using interfaces.</p>
+<div class="section" id="the-atlantis-case-study">
+<h2>The Atlantis Case Study<a class="headerlink" href="#the-atlantis-case-study" title="Permalink to this headline">¶</a></h2>
+<p>Atlantis is a country with a total population of 10 million people. 40% of the population lives in urban areas, distribute in 1.25 million households. The rest lives in rural areas, within 923 thousand households. The total population is expected to reach 15.9 million people by 2040 with an average annual growth rate of 1.8%.</p>
+<p>Currently, Atlantis imports 100% of its fuels. It relies on 5 power plant types to meet its electricity demand, each running on a single type of fuel: one large hydropower plant, natural gas-fired Single Cycle Steam Turbine, heavy fuel oil-fired Single Cycle Steam Turbine, diesel-fed Open Cycle Gas Turbine and coal-based Integrated Gasification Combined Cycle facility. Distributed diesel generators are the main source of electricity in many rural areas.</p>
+<p>Over the modelling period, this system will be expanded to explore the feasibility of including the following new technologies:</p>
+<ul class="simple">
+<li>wind turbines (25% load factor);</li>
+<li>mini hydro power plants (less than 1 MW);</li>
+<li>concentrated solar power plants (CSP);</li>
+<li>grid connected PV systems (Commercial);</li>
+<li>rooftop PV systems (in residential areas);</li>
+<li>a nuclear power plant (light water reactor);</li>
+<li>a new Combined Cycle Power Plant running on natural gas.</li>
+</ul>
+<div class="section" id="mapping-the-res-of-atlantis">
+<h3>Mapping the RES of Atlantis<a class="headerlink" href="#mapping-the-res-of-atlantis" title="Permalink to this headline">¶</a></h3>
+<p>When developing a model using an optimization tool like OSeMOSYS, the energy/electricity system needs to be mapped to identify all the relevant technologies and fuels that will be involved in the analysis. The schematic representation of the system for such purposes is called Reference Energy System (RES).</p>
+<p>Figure 1 illustrates the RES of Atlantis, where the lines represent energy carriers (e.g., crude oil, coal etc.), while the blocks represent transformation technologies (e.g., power plants, transmission and distribution stations etc.). The RES can be read from the left to the right. On the left hand side, the primary energy resources are represented. They can be extracted domestically, imported or both. Extraction and import processes are represented as technologies in the RES (i.e. black boxes with outgoing lines representing the fuels they make available). Importantly, each chain must always start with a technology. Moving from the left to right, the energy carriers are transformed by different technologies, each with a user-defined transfer function, to ultimately meet the final demand for energy or services, presented by the lines on the far right hand side.</p>
+<div class="figure align-center" id="id2">
+<img alt="../_images/Atlantis_RES.png" src="../_images/Atlantis_RES.png" />
+<p class="caption"><span class="caption-text">The Reference Energy System (RES) of the Atlantis case study.</span></p>
+</div>
+</div>
+</div>
+<div class="section" id="how-to-build-a-model-in-osemosys">
+<h2>How to build a model in OSeMOSYS<a class="headerlink" href="#how-to-build-a-model-in-osemosys" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="downloading-osemosys-and-glpk">
+<h3>Downloading OSeMOSYS and GLPK<a class="headerlink" href="#downloading-osemosys-and-glpk" title="Permalink to this headline">¶</a></h3>
+<p>To develop an energy systems model using OSeMOSYS and optimize it using GLPSOL (GNU- Linear programming solver), we will need two different files: one OSeMOSYS code file and a data/model file representing the data corresponding to the model developed by the user.</p>
+<p>The OSeMOSYS code (both the long and short versions) can be downloaded from GITHUB or the OSeMOSYS website; the latter also contains older versions of the code. A data file corresponding to the Atlantis model described in section 4.1 can also be downloaded from the above-mentioned sources.</p>
+<p>GLPK (GNU-Linear Programming toolkit) which contains GLPSOL can be downloaded from this link. The Setup file on extraction will create a folder containing the necessary library files and GLPSOL. The folder can be extracted to any location (referred by ”... in the sections below).</p>
+<p>The main steps to perform a model run are outlined in the following:</p>
+<ol class="arabic">
+<li><dl class="first docutils">
+<dt><em>The OSeMOSYS model file and the Atlantis data file</em></dt>
+<dd><p class="first last">Cut and paste the OSeMOSYS_201x_xx_x.txt and Atlantis.txt file into the .../GnuWin32/bin directory. (Remember that you set which directory this is after executing the glpk-xx.xx-setup.exe file.)</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><em>Open the command prompt</em></dt>
+<dd><p class="first last">The command prompt can be opened by clicking in Windows on Start, Run, and then typing ‘cmd’. (There are other ways of doing this but the above mentioned procedure is one of the easiest.) The command prompt will have some text to indicate the current directory to which you can send ‘prompts’. If you are not in the same directory where GLPSOL is stored, you need to change the directory to the address that contains ‘glpsol.exe’ (.../GnuWin32/bin). If GLPK has been extracted to (the default) ‘program files’ folder, you will need to go to C:/Program Files/GnuWin32/bin.
+In case you are not sure about the current directory, return to the root directory by typing ”cd/” . Then, navigate to the folder in which the files are stored by typing ”cd C:/.../GnuWin32/bin” then hit the return key (if you need help on command prompt, type ‘help’ and possible command options will be listed).</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><em>Running the Atlantis example in OSeMOSYS using ‘glpsol’</em></dt>
+<dd><p class="first">Now that you are in the .../GnuWin32/bin directory in command prompt, and you have OSeMOSYS_201x_xx_x.txt and Atlantis.txt pasted in the same directory you can run the Atlantis example in OSeMOSYS. To do this type:</p>
+<p><strong>glpsol -m OSeMOSYS_201x_xx_xx.txt -d UTOPIA_201x_xx_.dat -o results.txt</strong></p>
+<p class="last">All characters are important including space. This invokes a command (glpsol) to take the model file (OSeMOSYS_201x_xx_x.txt) and associated data input file (Atlantis.txt) to produce an output file with a full set of results (result.txt). The results file is particularly large, even for a simple problem. To easily comprehend the results, the OSeMOSYS code includes a few extra lines of code (not part of the optimization routine and available at the end of the code file) to produce a summary of results called SelectedResults.csv. This, as well as the full results file will appear in the .../GnuWin32/bin directory after the model run. A list of other possible command options can be found in the command prompt by typing glpsol –help.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><em>Errors</em></dt>
+<dd><p class="first last">Glpsol will display an error message if it does not understand the input files, and prompt the line number where there is a conflict.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><em>Output</em></dt>
+<dd><p class="first">When glpsol is running successfully, it prints a status line. Each line will look similar to the following:</p>
+<p>*4: objval = 1.563750000e+002 infeas = 0.000000000e+000</p>
+<p class="last">‘*’ means that a basic feasible solution has been found, ‘4:’ means that there have been 4 iterations to find a solution so far, ‘objval’ shows the current objective value, and ‘infeas’ shows the amount of infeasibility. When a feasible solution has been found, its value will be either 0 or a very small number. For more information on this please read the <a class="reference external" href="http://www.osemosys.org/uploads/1/8/5/0/18504136/ceron_-_2006_-_the_gnu_linear_programming_kit,_part_1_-_introduction_to_linear_optimization.pdf">documentation on GNU Linear Programming</a> by Rodrigo Ceron Ferreira.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><em>Solution</em></dt>
+<dd><p class="first">To see the full solution, use a text editor to open results.txt. (For example, Notepad or Notepad++, see Section 4.2.5 on Supportive Programmer and Documentation). Recall that the solution file will be found in the directory .../GnuWin32/bin. The solution summary file is a comma separated file called SelectedResults.csv. A csv file can be conveniently opened in a spreadsheet and the ‘text to column’ tab can be used to delineate the data by using the ‘comma’ option as the delimiter. The selected results file produces tables of the following outputs. (The units indicated are specific to the Atlantis example. Other units may be defined by the user when setting up a new data file):</p>
+<ul class="last simple">
+<li>Total emissions, by type and region (emissions units, Mton)</li>
+<li>Total costs, by region (currency units, m$)</li>
+<li>The (time independent) demand for each: energy carrier (this is zero if no demand was entered), region and year (energy units, PJ)</li>
+<li>The (time dependent) demand for each: energy carrier (this is zero if no demand was entered), time slice, region and year (energy units, PJ)</li>
+<li>The (time dependent) production for each energy carrier timeslice, region and year (energy units, PJ)</li>
+<li>The total annual capacity of each technology by region (capacity units, GW)</li>
+<li>The new investment in capacity for each technology for each year by region (capacity units, GW)</li>
+<li>The annual production by each technology of each energy source by region (energy units,GW)</li>
+<li>The annual use by each technology of each energy source by region (energy units, PJ)</li>
+<li>Annual emissions, by species and region (emissions units, Mton)</li>
+<li>Annual emissions by technology, species and region (emissions units, Mton) (3) (4).</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ol>
+<p>If you have problems in running the files from the .../GnuWin32/bin directory (due to lack of administrative rights), redirect the OSeMOSYS code and data files to a different directory out of the C drive.</p>
+<p>Note that if the directory on the command prompt window is not same as .../GnuWin32/bin, then you need to write the complete path (e.g., C:/Users/user001/Documents/OSeMOSYS_201x_xx_x.txt) in the command Prompt or change to the new folder before running the model.</p>
+</div>
+<div class="section" id="creating-an-input-file">
+<h3>Creating an input file<a class="headerlink" href="#creating-an-input-file" title="Permalink to this headline">¶</a></h3>
+<p>To create the input data for an optimization run, you can set up the model directly in a text editor like Notepad++. It is advisable to start with a small model and build it up step wise. This will simplify the debugging process (see following section on <a href="#id3"><span class="problematic" id="id4">`Debugging a model`_</span></a>). It is further advisable to back up working versions of model data files by saving them in a folder of your choice. The Atlantis input file provided with the downloaded model code might serve as a useful starting point to see how data needs to be correctly formatted. Alternatively, LEAP has also proven useful to write an OSeMOSYS data file.</p>
+</div>
+<div class="section" id="data-and-choices-of-units">
+<h3>Data and choices of units<a class="headerlink" href="#data-and-choices-of-units" title="Permalink to this headline">¶</a></h3>
+<p>The cornerstone of a legitimate model is input data. Using accurate data, relevant model designs and a consistent choice of assumptions will ultimately offer better and more representative insights into the system.
+Typical data requirements include:
+- Energy demand for the activities that are considered in the model and an annual (hourly) load curve for the relevant demands;</p>
+<ul class="simple">
+<li>Technology specific efficiencies, Electricity generation capacity, technology specific factors (capacity/availability), construction time, lifetime;</li>
+<li>Technology costs (capital, fixed and variable O&amp;M), Fuel costs (both local and imported costs);</li>
+<li>Resource potential (fossil fuel reserves, renewable energy potential), water availability for hydro power plants;</li>
+<li>Emissions accounting and corresponding fuel specific emission factors.</li>
+</ul>
+<p>Useful technology briefs containing such data have been developed by <a class="reference external" href="http://iea-etsap.org/">ETSAP</a>. <a class="reference external" href="http://www.iea.org/weo/">The World Energy Outlook</a> from IEA, IEA Cost of Generating Electricity (look for latest publication at <a class="reference external" href="http://www.iea.org/">www.iea.org</a>) and IRENA’s Renewable energy publications can further be used to obtain the required data for modelling a country’s energy sector. The fossil fuel reserves in every country can be obtained from EIA (U.S. Energy Information Administration) (5). The World Bank database is another useful source of data for energy demand. Note that these publications provide generic values, and data from national studies and strategy documents are usually preferred.</p>
+<p>For OSeMOSYS there are 4 units that needs to be chosen in a consistent manner. Bear in mind that certain default constraint levels, e.g., the total max capacity are set to values such as 999999. These limits can be violated if the choice of unit is too small (like kW for a large system, for which GW are recommendable). If a smaller unit is chosen, then the default values for certain parameters need to be increased in the model/data file</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="28%" />
+<col width="72%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Input variables</th>
+<th class="head">Possible choice of unit</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Energy</td>
+<td>GWh, MWh, PJ, GJ, etc.</td>
+</tr>
+<tr class="row-odd"><td>Power</td>
+<td>GW, MW, etc.</td>
+</tr>
+<tr class="row-even"><td>Cost</td>
+<td>Million $, Million £, Million Euro, etc.</td>
+</tr>
+<tr class="row-odd"><td>Emission</td>
+<td>Mton</td>
+</tr>
+</tbody>
+</table>
+<p>There is no unit conversion in OSeMOSYS: the modelling system assumes that all units are consistent. For example, the unit for capital costs needs to be coherent with the choice of units from the above table and is applied for all parameters relating to the costs. For example, when choosing GW and $ as power (capacity) and monetary units respectively, the capital cost has to be defined in Million $/GW. Similarly, if the energy unit is PJ, then the activity ratios and variable costs need to calculated with care to avoid errors. This is particularly important for the parameter <strong>CapacityToActivityUnit</strong> (1) (2), which depends on the final energy unit and the unit of capacity.</p>
+</div>
+<div class="section" id="supportive-programmes-and-documentation">
+<h3>Supportive programmes and documentation<a class="headerlink" href="#supportive-programmes-and-documentation" title="Permalink to this headline">¶</a></h3>
+<p>The installation of Notepad ++ is recommended to work with and edit the model and data files. It can be downloaded <a class="reference external" href="https://notepad-plus-plus.org/download/v7.5.4.html">here</a> (3) (4).</p>
+<p>The following three files are recommended for more background documentation on the basics of GNU MathProg and the linear optimization logic applied in OSeMOSYS:</p>
+<ol class="arabic simple">
+<li><a class="reference external" href="http://www.osemosys.org/uploads/1/8/5/0/18504136/ceron_-_2006_-_the_gnu_linear_programming_kit_part_1_-_introduction_to_linear_optimization.pdf">The GNU Linear Programming Kit, Part 1: Introduction to linear optimization</a>;</li>
+<li><a class="reference external" href="http://www.osemosys.org/uploads/1/8/5/0/18504136/ceron_2006_the_gnu_linear_programming_kit_part_2_intermediateproblemsinlinearprogramming.pdf">The GNU Linear Programming Kit, Part 2: Intermediate problems in linear programming</a>;</li>
+<li><a class="reference external" href="http://www.osemosys.org/uploads/1/8/5/0/18504136/ceron_2006_the_gnu_linear_programming_kit_part_3_advancedproblemsandelegantsolutions.pdf">The GNU Linear Programming Kit, Part 3: Advanced problems and elegant solutions</a>.</li>
+</ol>
+<p>Further, as mentioned before, the most comprehensive description of how OSeMOSYS works is provided in :</p>
+<ol class="arabic simple">
+<li><a class="reference external" href="http://www.sciencedirect.com/science/article/pii/S0301421511004897">“OSeMOSYS: The Open Source Energy Modeling System, An introduction to its ethos, structure and development”</a> by Howells et al. in 2011</li>
+<li><a class="reference external" href="https://www.sciencedirect.com/science/article/pii/S0360544212006299">“Modelling elements of Smart Grids – Enhancing the OSeMOSYS (Open Source Energy Modelling System) code”</a> by Welsch et al. in 2012.</li>
+</ol>
+<p>It should be noted that the salvage value as described in <a class="reference external" href="http://www.sciencedirect.com/science/article/pii/S0301421511004897">Howells et al. in 2011</a> is not applicable anymore: please see the <a class="reference external" href="http://www.osemosys.org/uploads/1/8/5/0/18504136/change_log_2017_11_08.pdf">Change Log</a> provided at <a class="reference external" href="http://www.osemosys.org">www.osemosys.org</a> for latest changes. Further, the description of storage in <a class="reference external" href="http://www.sciencedirect.com/science/article/pii/S0301421511004897">Howells et al. in 2011</a> is not applicable any longer. Instead, refer to the current way of modelling storage or variability as described in <a class="reference external" href="https://www.sciencedirect.com/science/article/pii/S0360544212006299">Welsch et al. in 2012</a>.</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../manual_index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Create a model in OSeMOSYS</a><ul>
+<li><a class="reference internal" href="#the-atlantis-case-study">The Atlantis Case Study</a><ul>
+<li><a class="reference internal" href="#mapping-the-res-of-atlantis">Mapping the RES of Atlantis</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#how-to-build-a-model-in-osemosys">How to build a model in OSeMOSYS</a><ul>
+<li><a class="reference internal" href="#downloading-osemosys-and-glpk">Downloading OSeMOSYS and GLPK</a></li>
+<li><a class="reference internal" href="#creating-an-input-file">Creating an input file</a></li>
+<li><a class="reference internal" href="#data-and-choices-of-units">Data and choices of units</a></li>
+<li><a class="reference internal" href="#supportive-programmes-and-documentation">Supportive programmes and documentation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../manual_index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="Code versions.html" title="previous chapter">Code versions</a></li>
+      <li>Next: <a href="Debugging a model.html" title="next chapter">Debugging a model: useful tips</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/manual/Create a model in OSeMOSYS.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, KTH-dESA.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.5.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/manual/Create a model in OSeMOSYS.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
