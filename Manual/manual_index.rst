@@ -11,12 +11,12 @@ Welcome to OSeMOSYS Manual's documentation!
    :caption: Contents:
    
    
-   manual/Introduction
-   manual/Structure of OSeMOSYS
-   manual/Code versions
-   manual/Create a model in OSeMOSYS
-   manual/Debugging a model
-   manual/Advanced functionalities
+   Introduction
+   Structure of OSeMOSYS
+   Code versions
+   Create a model in OSeMOSYS
+   Debugging a model
+   Advanced functionalities
 
 
 
